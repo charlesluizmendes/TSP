@@ -2,6 +2,27 @@
 
 Este repositório contém duas implementações em C que resolvem o Problema do Caixeiro Viajante (TSP) usando programação paralela: uma com **MPI** e outra com **OpenMP**. Ambas implementam soluções heurísticas para encontrar rotas aproximadamente ótimas.
 
+## **Estrutura do Projeto**
+
+```
+TSP/
+├── src/                    # Códigos fonte
+│   ├── tsp_mpi.c           # Implementação MPI
+│   └── tsp_omp.c           # Implementação OpenMP
+├── data/                   # Arquivos de teste TSPLIB95
+├── results/                # Resultados CSV
+├── bin/                    # Executáveis compilados
+├── logs/                   # Logs de execução PBS
+├── scripts/                # Scripts de execução e análise
+│   ├── test_quick.pbs      # Teste rápido (1h)
+│   ├── benchmark_full.pbs  # Benchmark completo (6h)
+│   ├── run_specific.pbs    # Instância específica (6h)
+│   ├── run_tests.sh        # Script de submissão
+│   ├── analyze.sh          # Análise de resultados
+│   └── download_data.sh    # Download dados TSPLIB95
+└── README.md               # Este arquivo
+```
+
 ## **Objetivo do Programa**
 O código implementa uma solução heurística para o TSP que encontra uma rota aproximadamente ótima visitando todas as cidades exatamente uma vez e retornando à origem. Ambas as versões usam paralelização para acelerar o processo testando diferentes pontos de partida simultaneamente.
 
@@ -129,14 +150,14 @@ mpirun -np 4 ./bin/tsp_mpi.exe arquivo.tsp
 
 ## **Comparação das Abordagens**
 
-| Aspecto | OpenMP | MPI |
-|---------|--------|-----|
-| **Modelo** | Threads (memória compartilhada) | Processos (memória distribuída) |
-| **Complexidade** | Mais simples | Mais complexo |
-| **Escalabilidade** | Limitada ao número de cores | Escalável para clusters |
-| **Overhead** | Menor | Maior (comunicação) |
-| **Balanceamento** | Automático (`schedule(dynamic)`) | Manual (round-robin) |
-| **Uso ideal** | Máquinas multicore | Clusters/supercomputadores |
+| Aspecto            | OpenMP                           | MPI                             |
+|--------------------|----------------------------------|---------------------------------|
+| **Modelo**         | Threads (memória compartilhada)  | Processos (memória distribuída) |
+| **Complexidade**   | Mais simples | Mais complexo     |                                 |
+| **Escalabilidade** | Limitada ao número de cores      | Escalável para clusters         |
+| **Overhead**       | Menor | Maior (comunicação)      |                                 |
+| **Balanceamento**  | Automático (`schedule(dynamic)`) | Manual (round-robin)            |
+| **Uso ideal**      | Máquinas multicore               | Clusters/supercomputadores      |
 
 ## **Saída do Programa**
 
@@ -154,23 +175,21 @@ Ambas as versões produzem:
 
 ## **Quando Usar Cada Versão**
 
-### **Use OpenMP quando:**
+### **Usar OpenMP quando:**
 - ✅ Executando em uma única máquina multicore
 - ✅ Desenvolvimento mais simples é prioridade
 - ✅ Overhead de comunicação deve ser mínimo
 - ✅ Balanceamento automático de carga é desejado
 
-### **Use MPI quando:**
+### **Usar MPI quando:**
 - ✅ Executando em cluster ou múltiplas máquinas
 - ✅ Problema requer memória distribuída
 - ✅ Máxima escalabilidade é necessária
 - ✅ Tolerância a falhas é importante
 
-Ambas as implementações são excelentes exemplos de como paralelizar algoritmos heurísticos mantendo instrumentação detalhada para análise de performance!
 
 
-
-# Compilação e Execução
+# Compilação e Execução (Local)
 
 ## **Comando de Compilação OpenMP**
 
@@ -228,4 +247,34 @@ mpiexec -n 16 .\bin\tsp_mpi.exe .\data\pcb442.tsp
 
 
 
+# TSP Benchmark - LoboC (NACAD/UFRJ)
 
+Projeto de comparação de performance entre algoritmos TSP usando MPI e OpenMP.
+
+## Como Usar
+
+### 1. Realizar login
+```bash
+ssh seu_usuario@loboc.nacad.ufrj.br
+```
+
+### 2. Criar estrutura
+```bash
+git clone 
+cd TSP
+```
+
+### 3. Conceder permissões
+```bash
+chmod +x scripts/*.sh
+```
+
+### 4. Executar testes
+```bash
+scripts/run_tests.sh
+```
+
+### 5. Analisar resultados
+```bash
+scripts/analyze.sh
+```

@@ -1,0 +1,102 @@
+#!/bin/bash
+#PBS -N tsp_benchmark_full
+#PBS -q b_24cores_6hs
+#PBS -l nodes=1:ppn=24
+#PBS -l walltime=06:00:00
+#PBS -o logs/benchmark_full_output.log
+#PBS -e logs/benchmark_full_error.log
+
+cd $PBS_O_WORKDIR
+
+echo "=== TSP BENCHMARK COMPLETO ==="
+echo "Job ID: $PBS_JOBID"
+echo "Data: $(date)"
+echo "Nó: $(hostname)"
+echo ""
+
+# Compilar programas
+echo "=== COMPILAÇÃO ==="
+gcc -O3 -fopenmp -lm src/tsp_omp.c -o bin/tsp_omp
+echo "✓ OpenMP compilado"
+
+mpicc -O3 -lm src/tsp_mpi.c -o bin/tsp_mpi
+echo "✓ MPI compilado"
+
+# Configurações
+CONFIGS=(1 2 4 8 12 16 20 24)
+REPETITIONS=3
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+CSV_FILE="results/benchmark_full_${TIMESTAMP}.csv"
+
+echo "Configurações: ${CONFIGS[*]}"
+echo "Repetições: $REPETITIONS"
+echo "Arquivo de saída: $CSV_FILE"
+echo ""
+
+# Cabeçalho CSV
+echo "algorithm,instance,threads,repetition,speedup,time_total,best_length" > $CSV_FILE
+
+# Processar todos os arquivos .tsp
+echo "=== EXECUTANDO TESTES ==="
+for tsp_file in data/*.tsp; do
+    if [[ ! -f "$tsp_file" ]]; then
+        echo "Nenhum arquivo .tsp encontrado em data/"
+        continue
+    fi
+    
+    filename=$(basename "$tsp_file")
+    echo "--- Processando $filename ---"
+    
+    for threads in "${CONFIGS[@]}"; do
+        echo "Configuração: $threads cores"
+        
+        # Testes OpenMP
+        for rep in $(seq 1 $REPETITIONS); do
+            echo "  OpenMP rep $rep..."
+            export OMP_NUM_THREADS=$threads
+            
+            output=$(timeout 300 bin/tsp_omp "$tsp_file" 2>/dev/null)
+            if [[ $? -eq 0 ]]; then
+                speedup=$(echo "$output" | grep "Speedup:" | awk '{print $2}' | tr -d 'x')
+                time_total=$(echo "$output" | grep "Tempo Paralelo:" | awk '{print $3}')
+                best_length=$(echo "$output" | grep "Melhor comprimento:" | awk '{print $3}')
+                
+                echo "OpenMP,$filename,$threads,$rep,$speedup,$time_total,$best_length" >> $CSV_FILE
+            else
+                echo "    Timeout/Erro"
+            fi
+        done
+        
+        # Testes MPI
+        for rep in $(seq 1 $REPETITIONS); do
+            echo "  MPI rep $rep..."
+            
+            output=$(timeout 300 mpirun -np $threads bin/tsp_mpi "$tsp_file" 2>/dev/null)
+            if [[ $? -eq 0 ]]; then
+                speedup=$(echo "$output" | grep "Speedup:" | awk '{print $2}' | tr -d 'x')
+                time_total=$(echo "$output" | grep "Tempo Paralelo:" | awk '{print $3}')
+                best_length=$(echo "$output" | grep "Melhor comprimento:" | awk '{print $3}')
+                
+                echo "MPI,$filename,$threads,$rep,$speedup,$time_total,$best_length" >> $CSV_FILE
+            else
+                echo "    Timeout/Erro"
+            fi
+        done
+    done
+    echo ""
+done
+
+echo "=== RESUMO FINAL ==="
+total_records=$(tail -n +2 "$CSV_FILE" | wc -l)
+echo "Total de registros: $total_records"
+echo "Arquivo salvo: $CSV_FILE"
+
+# Mostrar melhores speedups
+echo ""
+echo "Top 5 speedups:"
+tail -n +2 "$CSV_FILE" | sort -t',' -k5 -nr | head -5 | \
+awk -F',' '{printf "%s: %.2fx com %s threads (%s)\n", $1, $5, $3, $2}'
+
+echo ""
+echo "=== BENCHMARK CONCLUÍDO ==="
+echo "Fim: $(date)"
