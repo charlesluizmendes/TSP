@@ -4,7 +4,11 @@ O Problema do Caixeiro Viajante (TSP) é um problema clássico de otimização c
 
 O TSP é conhecido por ser um problema NP-difícil, o que significa que não há algoritmos conhecidos que possam resolver o problema de forma eficiente (em tempo polinomial) para um grande número de cidades. Para conjuntos de dados maiores, a busca de soluções ótimas torna-se computacionalmente impraticável. 
 
-A seguinte solução propõe a utilização desse algoritmo utilizando bibliotecas do MPI e OpenMP com os datasets de http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/.
+A seguinte solução propõe a utilização desse algoritmo utilizando bibliotecas do MPI e OpenMP com os datasets de http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/, com as seguintes caracteristicas:
+
+- TYPE: TSP
+- EDGE_WEIGHT_TYPE : EUC_2D
+- NODE_COORD_SECTION
 
 ## Compilação
 
