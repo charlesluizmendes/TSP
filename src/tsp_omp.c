@@ -6,12 +6,13 @@ typedef struct {
     double custo;
     int *rota;
     int thread_id;
+    double tempo;  // Adicionar tempo individual
 } ResultadoThread;
 
 int main(int argc, char *argv[]) {
     int n, algoritmo;
     Cidade *cidades = NULL;
-    int num_threads = omp_get_max_threads(); // Usar todas as threads disponíveis
+    int num_threads = omp_get_max_threads();
     
     if (argc < 3) {
         printf("Uso: %s <arquivo.tsp> <algoritmo> [num_threads]\n", argv[0]);
@@ -21,7 +22,6 @@ int main(int argc, char *argv[]) {
     
     algoritmo = atoi(argv[2]);
     
-    // Permitir especificar número de threads
     if (argc >= 4) {
         num_threads = atoi(argv[3]);
         if (num_threads <= 0 || num_threads > omp_get_max_threads()) {
@@ -58,10 +58,10 @@ int main(int argc, char *argv[]) {
         resultados[i].rota = malloc(n * sizeof(int));
         resultados[i].custo = DBL_MAX;
         resultados[i].thread_id = i;
+        resultados[i].tempo = 0.0;  // Inicializar tempo
     }
     
     double tempo_inicio = omp_get_wtime();
-    double *tempos_threads = malloc(num_threads * sizeof(double));
     
     // Executar algoritmo escolhido com paralelização OpenMP
     if (algoritmo == 0) {
@@ -75,44 +75,58 @@ int main(int argc, char *argv[]) {
             
             double melhor_custo = forca_bruta_openmp(cidades, n, tid, num_threads, resultados[tid].rota);
             resultados[tid].custo = melhor_custo;
-            tempos_threads[tid] = omp_get_wtime() - tempo_thread_inicio;
+            resultados[tid].tempo = omp_get_wtime() - tempo_thread_inicio;
         }
         
     } else if (algoritmo == 1) {
-        // Nearest neighbor com múltiplas cidades iniciais
+        // CORRIGIDO: Nearest neighbor com medição de tempo correta
         printf("Executando nearest neighbor com OpenMP...\n");
         
-        #pragma omp parallel for schedule(dynamic)
-        for (int start = 0; start < n; start++) {
-            int tid = omp_get_thread_num();
-            if (tid == 0 && start == 0) {
-                tempos_threads[tid] = omp_get_wtime();
-            }
-            
-            int *rota_temp = malloc(n * sizeof(int));
-            double custo = nearest_neighbor(cidades, n, start, rota_temp);
-            
-            #pragma omp critical
-            {
-                if (custo < resultados[tid].custo) {
-                    resultados[tid].custo = custo;
-                    for (int i = 0; i < n; i++) {
-                        resultados[tid].rota[i] = rota_temp[i];
-                    }
-                }
-            }
-            
-            free(rota_temp);
-            
-            if (tid == 0 && start == n-1) {
-                tempos_threads[tid] = omp_get_wtime() - tempos_threads[tid];
-            }
+        // Criar array local para melhor resultado por thread
+        double *melhor_custo_thread = malloc(num_threads * sizeof(double));
+        int **melhor_rota_thread = malloc(num_threads * sizeof(int*));
+        
+        for (int i = 0; i < num_threads; i++) {
+            melhor_custo_thread[i] = DBL_MAX;
+            melhor_rota_thread[i] = malloc(n * sizeof(int));
         }
         
-        // Ajustar tempos para outras threads
-        for (int i = 1; i < num_threads; i++) {
-            tempos_threads[i] = tempos_threads[0];
+        #pragma omp parallel
+        {
+            int tid = omp_get_thread_num();
+            double tempo_thread_inicio = omp_get_wtime();
+            
+            // Cada thread processa um subconjunto das cidades iniciais
+            #pragma omp for schedule(dynamic)
+            for (int start = 0; start < n; start++) {
+                int *rota_temp = malloc(n * sizeof(int));
+                double custo = nearest_neighbor(cidades, n, start, rota_temp);
+                
+                // Atualizar melhor resultado da thread atual
+                if (custo < melhor_custo_thread[tid]) {
+                    melhor_custo_thread[tid] = custo;
+                    for (int i = 0; i < n; i++) {
+                        melhor_rota_thread[tid][i] = rota_temp[i];
+                    }
+                }
+                
+                free(rota_temp);
+            }
+            
+            // Salvar resultado da thread
+            resultados[tid].custo = melhor_custo_thread[tid];
+            for (int i = 0; i < n; i++) {
+                resultados[tid].rota[i] = melhor_rota_thread[tid][i];
+            }
+            resultados[tid].tempo = omp_get_wtime() - tempo_thread_inicio;
         }
+        
+        // Limpeza
+        for (int i = 0; i < num_threads; i++) {
+            free(melhor_rota_thread[i]);
+        }
+        free(melhor_rota_thread);
+        free(melhor_custo_thread);
         
     } else {
         // 2-opt com OpenMP
@@ -125,25 +139,29 @@ int main(int argc, char *argv[]) {
             
             double melhor_custo = two_opt_openmp(cidades, n, tid, num_threads, resultados[tid].rota);
             resultados[tid].custo = melhor_custo;
-            tempos_threads[tid] = omp_get_wtime() - tempo_thread_inicio;
+            resultados[tid].tempo = omp_get_wtime() - tempo_thread_inicio;
         }
     }
     
     double tempo_total = omp_get_wtime() - tempo_inicio;
     
-    // DEBUG: Mostrar custo de cada thread antes da comparação
+    // DEBUG: Mostrar custo de cada thread
     for (int i = 0; i < num_threads; i++) {
-        printf("DEBUG: Thread %d encontrou custo %.2f\n", i, resultados[i].custo);
+        if (resultados[i].custo == DBL_MAX) {
+            printf("DEBUG: Thread %d nao encontrou solucao valida\n", i);
+        } else {
+            printf("DEBUG: Thread %d encontrou custo %.2f\n", i, resultados[i].custo);
+        }
     }
 
-    // Encontrar melhor resultado global e mostrar detalhes por thread
+    // Encontrar melhor resultado global
     double melhor_custo_global = DBL_MAX;
     int thread_vencedora = -1;
     
     printf("\n=== DETALHES POR THREAD ===\n");
     for (int i = 0; i < num_threads; i++) {
         double custo_display = (resultados[i].custo == DBL_MAX) ? -1.0 : resultados[i].custo;
-        printf("Thread %d: custo=%.2f, tempo=%.6fs", i, custo_display, tempos_threads[i]);
+        printf("Thread %d: custo=%.2f, tempo=%.6fs", i, custo_display, resultados[i].tempo);
         
         if (resultados[i].custo < melhor_custo_global) {
             melhor_custo_global = resultados[i].custo;
@@ -162,45 +180,51 @@ int main(int argc, char *argv[]) {
             if (i < n - 1) printf(" -> ");
         }
         printf(" -> %d\n", resultados[thread_vencedora].rota[0]);
-    }
-    
-    // Calcular métricas de tempo
-    double tempo_max = tempos_threads[0];
-    double tempo_min = tempos_threads[0];
-    double tempo_soma = 0;
-    
-    for (int i = 0; i < num_threads; i++) {
-        if (tempos_threads[i] > tempo_max) tempo_max = tempos_threads[i];
-        if (tempos_threads[i] < tempo_min) tempo_min = tempos_threads[i];
-        tempo_soma += tempos_threads[i];
-    }
-    
-    double tempo_medio = tempo_soma / num_threads;
-    
-    printf("\n=== METRICAS DE PARALELIZACAO ===\n");
-    printf("Melhor custo encontrado: %.2f (Thread %d)\n", melhor_custo_global, thread_vencedora);
-    printf("Numero de threads: %d\n", num_threads);
-    printf("Tempo total (wall clock): %.6f segundos\n", tempo_total);
-    printf("Tempo maximo (thread): %.6f segundos\n", tempo_max);
-    printf("Tempo medio (thread):  %.6f segundos\n", tempo_medio);
-    printf("Tempo minimo (thread): %.6f segundos\n", tempo_min);
-    
-    if (num_threads > 1) {
-        double variacao_tempo = ((tempo_max - tempo_min) / tempo_max) * 100;
-        double balanceamento = (tempo_min / tempo_max) * 100;
-        double eficiencia_uso = (tempo_medio / tempo_max) * 100;
-        double speedup = (tempo_soma) / (num_threads * tempo_total);
-        double eficiencia_paralela = speedup / num_threads * 100;
-        
-        printf("\n=== BALANCEAMENTO DE CARGA ===\n");
-        printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
-        printf("Balanceamento:     %.1f%%\n", balanceamento);
-        printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
-        printf("Speedup estimado:  %.2fx\n", speedup);
-        printf("Eficiencia paralela: %.1f%%\n", eficiencia_paralela);
     } else {
-        printf("\n=== EXECUCAO SEQUENCIAL ===\n");
-        printf("Executando com 1 thread (sem paralelizacao)\n");
+        printf("\nNenhuma thread encontrou solcao válida!\n");
+    }
+    
+    // Calcular métricas de tempo CORRIGIDAS
+    if (thread_vencedora != -1) {
+        double tempo_max = resultados[0].tempo;
+        double tempo_min = resultados[0].tempo;
+        double tempo_soma = 0;
+        
+        for (int i = 0; i < num_threads; i++) {
+            if (resultados[i].tempo > tempo_max) tempo_max = resultados[i].tempo;
+            if (resultados[i].tempo < tempo_min) tempo_min = resultados[i].tempo;
+            tempo_soma += resultados[i].tempo;
+        }
+        
+        double tempo_medio = tempo_soma / num_threads;
+        
+        printf("\n=== METRICAS DE PARALELIZACAO ===\n");
+        printf("Melhor custo encontrado: %.2f (Thread %d)\n", melhor_custo_global, thread_vencedora);
+        printf("Numero de threads: %d\n", num_threads);
+        printf("Tempo total (wall clock): %.6f segundos\n", tempo_total);
+        printf("Tempo maximo (thread): %.6f segundos\n", tempo_max);
+        printf("Tempo medio (thread):  %.6f segundos\n", tempo_medio);
+        printf("Tempo minimo (thread): %.6f segundos\n", tempo_min);
+        
+        if (num_threads > 1 && tempo_total > 0) {
+            double variacao_tempo = tempo_max > 0 ? ((tempo_max - tempo_min) / tempo_max) * 100 : 0;
+            double balanceamento = tempo_max > 0 ? (tempo_min / tempo_max) * 100 : 0;
+            double eficiencia_uso = tempo_max > 0 ? (tempo_medio / tempo_max) * 100 : 0;
+            
+            // Speedup corrigido: tempo sequencial estimado / tempo paralelo real
+            double speedup_real = tempo_total > 0 ? (tempo_soma / num_threads) / tempo_total : 0;
+            double eficiencia_paralela = speedup_real / num_threads * 100;
+            
+            printf("\n=== BALANCEAMENTO DE CARGA ===\n");
+            printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
+            printf("Balanceamento:     %.1f%%\n", balanceamento);
+            printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
+            printf("Speedup estimado:  %.2fx\n", speedup_real);
+            printf("Eficiencia paralela: %.1f%%\n", eficiencia_paralela);
+        } else {
+            printf("\n=== EXECUCAO SEQUENCIAL ===\n");
+            printf("Executando com 1 thread (sem paralelizacao)\n");
+        }
     }
     
     // Limpeza
@@ -208,7 +232,6 @@ int main(int argc, char *argv[]) {
         free(resultados[i].rota);
     }
     free(resultados);
-    free(tempos_threads);
     free(cidades);
     
     return 0;
