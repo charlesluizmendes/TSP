@@ -180,18 +180,23 @@ int main(int argc, char *argv[]) {
     printf("Tempo medio (thread):  %.6f segundos\n", tempo_medio);
     printf("Tempo minimo (thread): %.6f segundos\n", tempo_min);
     
-    double variacao_tempo = ((tempo_max - tempo_min) / tempo_max) * 100;
-    double balanceamento = (tempo_min / tempo_max) * 100;
-    double eficiencia_uso = (tempo_medio / tempo_max) * 100;
-    double speedup = (tempo_soma) / (num_threads * tempo_total);
-    double eficiencia_paralela = speedup / num_threads * 100;
-    
-    printf("\n=== BALANCEAMENTO DE CARGA ===\n");
-    printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
-    printf("Balanceamento:     %.1f%%\n", balanceamento);
-    printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
-    printf("Speedup estimado:  %.2fx\n", speedup);
-    printf("Eficiencia paralela: %.1f%%\n", eficiencia_paralela);
+    if (num_threads > 1) {
+        double variacao_tempo = ((tempo_max - tempo_min) / tempo_max) * 100;
+        double balanceamento = (tempo_min / tempo_max) * 100;
+        double eficiencia_uso = (tempo_medio / tempo_max) * 100;
+        double speedup = (tempo_soma) / (num_threads * tempo_total);
+        double eficiencia_paralela = speedup / num_threads * 100;
+        
+        printf("\n=== BALANCEAMENTO DE CARGA ===\n");
+        printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
+        printf("Balanceamento:     %.1f%%\n", balanceamento);
+        printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
+        printf("Speedup estimado:  %.2fx\n", speedup);
+        printf("Eficiencia paralela: %.1f%%\n", eficiencia_paralela);
+    } else {
+        printf("\n=== EXECUCAO SEQUENCIAL ===\n");
+        printf("Executando com 1 thread (sem paralelizacao)\n");
+    }
     
     // Limpeza
     for (int i = 0; i < num_threads; i++) {

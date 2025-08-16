@@ -173,14 +173,19 @@ int main(int argc, char *argv[]) {
         printf("Tempo medio:  %.6f segundos\n", tempo_medio);
         printf("Tempo minimo: %.6f segundos\n", tempo_min);
         
-        double variacao_tempo = ((tempo_max - tempo_min) / tempo_max) * 100;
-        double balanceamento = (tempo_min / tempo_max) * 100;
-        double eficiencia_uso = (tempo_medio / tempo_max) * 100;
-        
-        printf("\n=== BALANCEAMENTO DE CARGA ===\n");
-        printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
-        printf("Balanceamento:     %.1f%%\n", balanceamento);
-        printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
+        if (size > 1) {
+            double variacao_tempo = ((tempo_max - tempo_min) / tempo_max) * 100;
+            double balanceamento = (tempo_min / tempo_max) * 100;
+            double eficiencia_uso = (tempo_medio / tempo_max) * 100;
+    
+            printf("\n=== BALANCEAMENTO DE CARGA ===\n");
+            printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
+            printf("Balanceamento:     %.1f%%\n", balanceamento);
+            printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
+        } else {
+            printf("\n=== EXECUCAO SEQUENCIAL ===\n");
+            printf("Executando com 1 processo (sem paralelizacao)\n");
+        }
         
         fflush(stdout); // Garantir que métricas sejam impressas
     }
