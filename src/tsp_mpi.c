@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     
     if (argc < 3) {
         printf("Uso: %s <arquivo.tsp> <algoritmo>\n", argv[0]);
-        printf("Algoritmos: 0=força bruta, 1=nearest neighbor, 2=2-opt\n");
+        printf("Algoritmos: 0=forca bruta, 1=nearest neighbor, 2=2-opt\n");
         return 1;
     }
     

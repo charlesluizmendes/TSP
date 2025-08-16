@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     
     if (argc < 3) {
         printf("Uso: %s <arquivo.tsp> <algoritmo> [num_threads]\n", argv[0]);
-        printf("Algoritmos: 0=força bruta, 1=nearest neighbor, 2=2-opt\n");
+        printf("Algoritmos: 0=forca bruta, 1=nearest neighbor, 2=2-opt\n");
         return 1;
     }
     
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     // Executar algoritmo escolhido com paralelização OpenMP
     if (algoritmo == 0) {
         // Força bruta com OpenMP
-        printf("Executando força bruta com OpenMP...\n");
+        printf("Executando forca bruta com OpenMP...\n");
         
         #pragma omp parallel
         {
