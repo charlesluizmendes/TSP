@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     
     if (argc < 3) {
         printf("Uso: %s <arquivo.tsp> <algoritmo> [num_threads]\n", argv[0]);
-        printf("Algoritmos: 0=forca bruta, 1=nearest neighbor, 2=2-opt\n");
+        printf("Algoritmos: 0=força bruta, 1=nearest neighbor, 2=2-opt\n");
         return 1;
     }
     
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     if (argc >= 4) {
         num_threads = atoi(argv[3]);
         if (num_threads <= 0 || num_threads > omp_get_max_threads()) {
-            printf("Numero de threads inválido. Usando %d threads.\n", omp_get_max_threads());
+            printf("Número de threads inválido. Usando %d threads.\n", omp_get_max_threads());
             num_threads = omp_get_max_threads();
         }
     }
@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     
     // Ler arquivo TSP
     if (descobrir_tamanho_instancia(argv[1], &n) != 0) {
-        printf("Erro ao ler dimensoes do arquivo %s\n", argv[1]);
+        printf("Erro ao ler dimensões do arquivo %s\n", argv[1]);
         return 1;
     }
     
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     // Executar algoritmo escolhido com paralelização OpenMP
     if (algoritmo == 0) {
         // Força bruta com OpenMP
-        printf("Executando forca bruta com OpenMP...\n");
+        printf("Executando força bruta com OpenMP...\n");
         
         #pragma omp parallel
         {
@@ -131,15 +131,20 @@ int main(int argc, char *argv[]) {
     
     double tempo_total = omp_get_wtime() - tempo_inicio;
     
-    // Encontrar melhor resultado global
+    // Encontrar melhor resultado global e mostrar detalhes por thread
     double melhor_custo_global = DBL_MAX;
     int thread_vencedora = -1;
     
+    printf("\n=== DETALHES POR THREAD ===\n");
     for (int i = 0; i < num_threads; i++) {
+        double custo_display = (resultados[i].custo == DBL_MAX) ? -1.0 : resultados[i].custo;
+        printf("Thread %d: custo=%.2f, tempo=%.6fs", i, custo_display, tempos_threads[i]);
+        
         if (resultados[i].custo < melhor_custo_global) {
             melhor_custo_global = resultados[i].custo;
             thread_vencedora = i;
         }
+        printf("\n");
     }
     
     // Mostrar resultados
