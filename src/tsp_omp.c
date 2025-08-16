@@ -131,6 +131,11 @@ int main(int argc, char *argv[]) {
     
     double tempo_total = omp_get_wtime() - tempo_inicio;
     
+    // DEBUG: Mostrar custo de cada thread antes da comparação
+    for (int i = 0; i < num_threads; i++) {
+        printf("DEBUG: Thread %d encontrou custo %.2f\n", i, resultados[i].custo);
+    }
+
     // Encontrar melhor resultado global e mostrar detalhes por thread
     double melhor_custo_global = DBL_MAX;
     int thread_vencedora = -1;

@@ -70,10 +70,13 @@ int main(int argc, char *argv[]) {
     double tempo_algoritmo_inicio = MPI_Wtime();
     
     if (algoritmo == 0) {
+        printf("Executando forca bruta com MPI...\n");
         melhor_custo_local = forca_bruta(cidades, n, rank, size, melhor_rota);
     } else if (algoritmo == 1) {
+        printf("Executando nearest neighbor com MPI...\n");
         melhor_custo_local = nearest_neighbor(cidades, n, rank, melhor_rota);
     } else {
+        printf("Executando 2-opt com MPI...\n");
         melhor_custo_local = two_opt(cidades, n, rank, size, melhor_rota);
     }
     
@@ -147,6 +150,37 @@ int main(int argc, char *argv[]) {
         processo_vencedor = rank_vencedor_global;
     }
     
+    // Coletar detalhes de todos os processos para mostrar
+    double *todos_custos = NULL;
+    double *todos_tempos = NULL;
+    
+    if (rank == 0) {
+        todos_custos = malloc(size * sizeof(double));
+        todos_tempos = malloc(size * sizeof(double));
+    }
+    
+    // Coletar custos e tempos de todos os processos
+    double custo_para_gather = (melhor_custo_local == DBL_MAX) ? -1.0 : melhor_custo_local;
+    MPI_Gather(&custo_para_gather, 1, MPI_DOUBLE, todos_custos, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Gather(&tempo_algoritmo, 1, MPI_DOUBLE, todos_tempos, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    
+    // Processo 0 mostra detalhes de todos os processos
+    if (rank == 0) {
+        printf("\n=== DETALHES POR PROCESSO ===\n");
+        for (int i = 0; i < size; i++) {
+            printf("Processo %d: custo=%.2f, tempo=%.6fs", i, todos_custos[i], todos_tempos[i]);
+            
+            // Marcar o processo vencedor
+            if (todos_custos[i] != -1.0 && todos_custos[i] == melhor_custo_global) {
+                printf(" ** VENCEDOR **");
+            }
+            printf("\n");
+        }
+        
+        free(todos_custos);
+        free(todos_tempos);
+    }
+    
     // Apenas o processo vencedor mostra sua rota
     if (rank == processo_vencedor) {
         printf("\n=== ROTA VENCEDORA (Processo %d) ===\n", rank);
@@ -173,11 +207,12 @@ int main(int argc, char *argv[]) {
         printf("Tempo medio:  %.6f segundos\n", tempo_medio);
         printf("Tempo minimo: %.6f segundos\n", tempo_min);
         
+        // Só mostrar métricas de balanceamento se houver múltiplos processos
         if (size > 1) {
             double variacao_tempo = ((tempo_max - tempo_min) / tempo_max) * 100;
             double balanceamento = (tempo_min / tempo_max) * 100;
             double eficiencia_uso = (tempo_medio / tempo_max) * 100;
-    
+            
             printf("\n=== BALANCEAMENTO DE CARGA ===\n");
             printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
             printf("Balanceamento:     %.1f%%\n", balanceamento);
