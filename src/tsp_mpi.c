@@ -21,10 +21,23 @@ int main(int argc, char *argv[]) {
     
     // Processo 0 lê o arquivo
     if (rank == 0) {
-        cidades = malloc(1000 * sizeof(Cidade));
-        if (!cidades || ler_instancia(argv[1], cidades, &n) != 0) {
+        // Primeira passada: descobrir quantas cidades há
+        if (descobrir_tamanho_instancia(argv[1], &n) != 0) {
+            printf("Erro ao ler dimensões do arquivo %s\n", argv[1]);
+            MPI_Abort(MPI_COMM_WORLD, 1);
+        }
+        
+        // Alocar dinamicamente baseado no tamanho real
+        cidades = malloc(n * sizeof(Cidade));
+        if (!cidades) {
+            printf("Erro ao alocar memoria para %d cidades\n", n);
+            MPI_Abort(MPI_COMM_WORLD, 1);
+        }
+        
+        // Segunda passada: ler as coordenadas
+        if (ler_instancia(argv[1], cidades, &n) != 0) {
             printf("Erro ao ler arquivo %s\n", argv[1]);
-            if (cidades) free(cidades);
+            free(cidades);
             MPI_Abort(MPI_COMM_WORLD, 1);
         }
         
