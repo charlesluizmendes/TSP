@@ -2,118 +2,177 @@
 
 ## **📊 Análise dos Resultados:**
 
-### **1. Melhoria da Qualidade da Solução com Paralelização:**
+### **1. Consistência da Qualidade da Solução:**
 
-| Threads | Melhor Custo | Thread Vencedora | Melhoria vs 1 thread |
-|---------|--------------|------------------|----------------------|
-| 1       | **58952.97** | 0                | Baseline             |
-| 2       | **58952.97** | 1                | **0.0% igual**       |
-| 4       | **58952.97** | 3                | **0.0% igual**       |
-| 8       | **58952.97** | 3                | **0.0% igual**       |
-| 16      | **58952.97** | 11               | **0.0% igual**       |
-| 32      | **58952.97** | 11               | **0.0% igual**       |
-| 64      | **58952.97** | 11               | **0.0% igual**       |
-| 128     | **58952.97** | 11 (limitado a 64) | **0.0% igual**    |
+| Threads | Melhor Custo | Thread Vencedor | Melhoria vs 1 thread |
+|---------|--------------|-----------------|----------------------|
+| 1       | 58952.97     | 0               | Baseline            |
+| 2       | 58952.97     | 1               | **0.0% (igual)**    |
+| 4       | 58952.97     | 2               | **0.0% (igual)**    |
+| 8       | 58952.97     | 0               | **0.0% (igual)**    |
+| 16      | 58952.97     | 1               | **0.0% (igual)**    |
+| 32      | 58952.97     | 3               | **0.0% (igual)**    |
+| 64      | 58952.97     | 20              | **0.0% (igual)**    |
+| 128     | 58952.97     | 5               | **0.0% (igual)** 🎯 |
 
-### **2. Padrão de Escalabilidade:**
+### **2. Padrão de Escalabilidade Temporal:**
 
-#### **🎯 Observação Crítica: Convergência Total**
-- **Mesmo resultado em todas as configurações**: 58952.97
-- **Thread 11 consistentemente vencedora** a partir de 16 threads
-- **Não há variação na qualidade da solução**
+#### **⚡ Speedup Quase Linear (1-8 threads):**
+- **1 thread**: 0.102s
+- **2 threads**: 0.052s → **Speedup 1.96x**
+- **4 threads**: 0.034s → **Speedup 3.00x**
+- **8 threads**: 0.014s → **Speedup 7.29x** ⭐
 
-#### **📈 Tendência de Melhoria:**
-- **Todas as configurações**: Encontram exatamente a mesma solução
-- **Thread vencedora evolui**: 0 → 1 → 3 → 3 → 11 → 11 → 11
-- **Resultado determinístico**: Rota idêntica em todos os casos
+#### **📉 Platô de Performance (16+ threads):**
+- **16-128 threads**: Tempo estável entre 0.014-0.019s
+- **Overhead de sincronização** começa a dominar
 
-### **3. Análise do Balanceamento:**
+### **3. Análise do Balanceamento de Carga:**
 
-| Threads | Tempo Max | Tempo Min | Variação | Balanceamento | Eficiência |
-|---------|-----------|-----------|----------|---------------|------------|
-| 2       | 0.051s    | 0.050s    | 2.0%     | **98.0%**     | **99.0%**  |
-| 4       | 0.026s    | 0.025s    | 3.8%     | **96.2%**     | **97.1%**  |
-| 8       | 0.021s    | 0.013s    | **38.1%** | **61.9%**     | **74.4%**  |
-| 16      | 0.013s    | 0.011s    | 15.4%    | **84.6%**     | **91.3%**  |
-| 32      | 0.014s    | 0.005s    | **64.3%** | **35.7%**     | **71.7%**  |
-| 64      | 0.010s    | 0.003s    | **70.0%** | **30.0%**     | **75.8%**  |
-| 128     | 0.013s    | 0.003s    | **76.9%** | **23.1%**     | **62.5%**  |
+| Threads | Variação Tempo | Balanceamento | Eficiência | Speedup | Efic. Paralela |
+|---------|----------------|---------------|------------|---------|----------------|
+| 2       | 0.0%          | 100.0%        | 100.0%     | 0.98x   | **49.0%**      |
+| 4       | 0.0%          | 100.0%        | 100.0%     | 1.00x   | **25.0%**      |
+| 8       | 0.0%          | 100.0%        | 100.0%     | 1.00x   | **12.5%**      |
+| 16      | 0.0%          | 100.0%        | 100.0%     | 0.93x   | **5.8%**       |
+| 32      | **46.2%**     | **53.8%**     | 90.6%      | 0.84x   | **2.6%**       |
+| 64      | **61.5%**     | **38.5%**     | 81.1%      | 0.66x   | **1.0%**       |
+| 128     | **92.3%**     | **7.7%**      | 48.9%      | 0.33x   | **0.3%**       |
 
 ### **4. Insights Importantes:**
 
-#### **🚀 Diferença Fundamental vs MPI:**
-- **OpenMP encontra a MESMA solução** em todas as configurações
-- **MPI tinha variação significativa** (61984.05 → 59685.52)
-- **Thread 11 domina** a partir de 16 threads (equivale à cidade inicial 11)
+#### **🎯 Determinismo vs Aleatoriedade:**
+- **OpenMP mantém qualidade consistente** (58952.97 em todas as execuções)
+- **Diferente do MPI**: Não há "lottery effect" - mesmo algoritmo, mesma rota ótima
+- **Thread vencedora varia**, mas **custo sempre idêntico**
 
-#### **⚠️ Problemas de Balanceamento:**
-- **8+ threads**: Variação de tempo cresce drasticamente (38-77%)
-- **Overhead de sincronização**: Barreiras e seções críticas
-- **Memory contention**: Competição por recursos compartilhados
+#### **⚡ Eficiência de Paralelização:**
+- **1-8 threads**: Balanceamento perfeito (100.0%)
+- **Sweet spot: 4-8 threads** para melhor speedup real
+- **16+ threads**: Overhead de sincronização cresce drasticamente
 
-#### **🎯 Padrão "Determinístico Convergente":**
-- **Nearest Neighbor é determinístico** por cidade inicial
-- **Todas as threads encontram a mesma rota ótima local**
-- **Thread 11** sempre produz a melhor solução (cidade inicial 11)
+#### **🚫 Problemas com Muitas Threads:**
+- **32+ threads**: Desbalanceamento severo (>46% variação)
+- **128 threads**: 39 threads falharam completamente ("não encontrou solução válida")
+- **Contenção de recursos** e overhead de criação de threads
 
-### **5. Análise Técnica do OpenMP:**
+### **5. Comparação OpenMP vs MPI:**
 
-#### **🔧 Comportamento de Execução:**
-- **Shared memory**: Acesso simultâneo aos dados da instância
-- **Determinismo**: Cada thread testa sistematicamente sua cidade inicial
-- **Convergência**: Todas encontram a mesma solução de custo 58952.97
+#### **Qualidade da Solução:**
+- **OpenMP**: Consistente (58952.97) ✅
+- **MPI**: Melhora com mais processos (61984.05 → 59685.52) ⭐
 
-#### **⚡ Gargalos Identificados:**
-- **Synchronization overhead**: Crescente com mais threads
-- **Cache contention**: Competição por linhas de cache
-- **False sharing**: Degradação com threads adjacentes
+#### **Speedup:**
+- **OpenMP**: Linear até 8 threads, depois platô
+- **MPI**: Foco na qualidade, não no tempo
 
-### **6. Comparação de Zonas de Performance:**
+#### **Balanceamento:**
+- **OpenMP**: Perfeito até 16 threads
+- **MPI**: Problemas desde 8 processos
 
-| Faixa        | Comportamento           | Qualidade    | Eficiência     | Recomendação |
-|--------------|-------------------------|--------------|----------------|--------------|
-| **1-4 threads**  | Exploração eficiente    | **Ótima**    | **Excelente**  | **Ideal**    |
-| **8-16 threads** | Degradação moderada     | **Ótima**    | **Boa**        | Aceitável    |
-| **32-64 threads** | Alta contenção          | **Ótima**    | **Baixa**      | Evitar       |
-| **128+ threads** | Overhead excessivo      | **Ótima**    | **Muito baixa** | Não usar     |
+### **6. Padrão de Falhas (128 threads):**
+- **39 threads falharam** ("custo=-1.00, tempo=0.001000s")
+- **Possível causa**: Race conditions ou esgotamento de recursos
+- **Threads válidas**: Ainda encontram a solução ótima
 
-### **7. Recomendações Estratégicas:**
+### **7. Recomendações:**
 
-#### **Para Qualidade da Solução:**
-- **Qualquer configuração funciona** - todas encontram a mesma solução ótima
-- **1-4 threads** oferece a melhor eficiência
+#### **Para Performance Máxima:**
+- **Use 4-8 threads** para melhor speedup e eficiência
+- **Evite 32+ threads** devido ao overhead excessivo
 
-#### **Para Eficiência Computacional:**
-- **2-4 threads** para melhor balanceamento (96-98%)
-- **Evite 8+ threads** devido ao overhead desnecessário
+#### **Para Estabilidade:**
+- **Até 16 threads** mantém balanceamento perfeito
+- **128 threads** pode causar falhas de execução
 
 #### **Trade-off Ideal:**
-- **4 threads**: Melhor equilíbrio (mesma qualidade, 97.1% eficiência)
-- **2 threads**: Máxima eficiência (99.0%) com resultado ótimo
+- **8 threads**: Speedup 7.29x com balanceamento perfeito
+- **Tempo: 0.014s vs 0.102s sequencial** (86% mais rápido)
 
-### **8. Diferenças Cruciais OpenMP vs MPI:**
+### **8. Conclusão Científica:**
 
-#### **🔄 Comportamento Oposto:**
-- **OpenMP**: Convergência total (58952.97 sempre)
-- **MPI**: Variação significativa (61984.05 → 59685.52)
+O OpenMP com Nearest Neighbor demonstra **excelente paralelização de speedup** até 8 threads, mantendo **qualidade de solução consistente**. Diferentemente do MPI, o OpenMP não melhora a qualidade da solução (mesmo algoritmo determinístico), mas oferece **aceleração significativa** com **balanceamento perfeito** em configurações otimizadas. O limite prático é **8-16 threads** antes que o overhead domine a performance. 🚀⚡
 
-#### **🆚 Características Técnicas:**
-- **OpenMP**: Determinismo completo, overhead de sincronização
-- **MPI**: Exploração diversificada, overhead de comunicação
-- **OpenMP**: Melhor para consistência
-- **MPI**: Melhor para exploração do espaço de soluções
+---
 
-### **9. Conclusão Científica:**
+## **📈 Gráficos de Performance:**
 
-O OpenMP com Nearest Neighbor demonstra **comportamento completamente determinístico** - todas as configurações convergem para a **mesma solução ótima local** (58952.97). Isso contrasta drasticamente com o MPI, que oferece diversidade de exploração.
+### **Speedup vs Threads:**
+```
+Speedup = Tempo_1_thread / Tempo_N_threads
 
-**Key Insight**: O OpenMP é **altamente eficiente** para este problema, mas **não oferece diversidade de exploração** como o MPI. A thread 11 (cidade inicial 11) é consistentemente a melhor escolha.
+1 thread:   1.00x (baseline)
+2 threads:  1.96x ████████████████████
+4 threads:  3.00x ██████████████████████████████
+8 threads:  7.29x █████████████████████████████████████████████████████████████████████████
+16 threads: 6.80x ████████████████████████████████████████████████████████████████████
+32 threads: 7.29x █████████████████████████████████████████████████████████████████████████
+64 threads: 6.38x ████████████████████████████████████████████████████████████████
+128 threads: 5.37x █████████████████████████████████████████████████████████
+```
 
-### **10. Recomendação Final:**
+### **Eficiência Paralela vs Threads:**
+```
+Eficiência = Speedup / Número_de_Threads * 100%
 
-Para **pcb442.tsp** com OpenMP Nearest Neighbor:
-- **4 threads** oferece o melhor custo-benefício (resultado ótimo + 97.1% eficiência)
-- **Mais threads são desnecessárias** - não melhoram a qualidade
-- **OpenMP é ideal quando você quer eficiência** sem complexidade de implementação
+2 threads:  49.0% ████████████████████████████████████████████████████
+4 threads:  25.0% █████████████████████████
+8 threads:  12.5% █████████████
+16 threads:  5.8% ██████
+32 threads:  2.6% ███
+64 threads:  1.0% █
+128 threads: 0.3% ▌
+```
 
-**🎯 OpenMP garante resultado consistente e ótimo, mas sacrifica a diversidade de exploração que o MPI oferece!** ⚡🔄
+---
+
+## **🔍 Análise Detalhada por Thread Count:**
+
+### **2 Threads:**
+- **Melhor configuração para eficiência** (49.0%)
+- **Speedup próximo ao ideal** (1.96x de 2.00x possível)
+- **Balanceamento perfeito** sem overhead significativo
+
+### **4 Threads:**
+- **Speedup excelente** (3.00x de 4.00x possível)
+- **Eficiência ainda alta** (25.0%)
+- **Ponto ideal para CPUs quad-core**
+
+### **8 Threads:**
+- **Melhor speedup absoluto** (7.29x)
+- **Sweet spot para performance**
+- **Último ponto com balanceamento perfeito**
+
+### **16+ Threads:**
+- **Plateau de performance** - speedup não melhora significativamente
+- **Eficiência diminui drasticamente**
+- **Overhead de sincronização domina**
+
+### **128 Threads:**
+- **Degradação severa** (39 threads falham)
+- **Contenção de recursos** crítica
+- **Não recomendado para produção**
+
+---
+
+## **⚖️ Comparativo Detalhado: OpenMP vs MPI**
+
+| Aspecto | OpenMP | MPI |
+|---------|--------|-----|
+| **Qualidade da Solução** | Consistente (58952.97) | Melhora com paralelização |
+| **Melhor Speedup** | 7.29x (8 threads) | Foco na qualidade |
+| **Balanceamento** | Perfeito até 16 threads | Problemas desde 8 processos |
+| **Determinismo** | Totalmente determinístico | "Lottery effect" benéfico |
+| **Overhead** | Baixo até 16 threads | Alto desde início |
+| **Falhas** | Apenas com 128 threads | Raras |
+| **Uso Prático** | 4-8 threads ideais | 8-16 processos para qualidade |
+
+---
+
+## **🎯 Conclusões Finais:**
+
+1. **OpenMP é superior para speedup puro** quando a qualidade da solução já é conhecida
+2. **MPI é superior para exploração** e descoberta de soluções melhores
+3. **8 threads é o sweet spot** para OpenMP com este algoritmo
+4. **Overhead de sincronização** é o principal limitador em configurações maiores
+5. **Determinismo do OpenMP** é vantagem e desvantagem dependendo do objetivo
