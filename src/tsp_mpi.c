@@ -65,18 +65,26 @@ int main(int argc, char *argv[]) {
     // Sincronizar todos os processos antes de iniciar
     MPI_Barrier(MPI_COMM_WORLD);
     
+    // Processo 0 anuncia qual algoritmo será executado
+    if (rank == 0) {
+        if (algoritmo == 0) {
+            printf("Executando forca bruta com MPI...\n");
+        } else if (algoritmo == 1) {
+            printf("Executando nearest neighbor com MPI...\n");
+        } else {
+            printf("Executando 2-opt com MPI...\n");
+        }
+    }
+
     // Executar algoritmo escolhido
     double melhor_custo_local;
     double tempo_algoritmo_inicio = MPI_Wtime();
     
     if (algoritmo == 0) {
-        printf("Executando forca bruta com MPI...\n");
         melhor_custo_local = forca_bruta(cidades, n, rank, size, melhor_rota);
     } else if (algoritmo == 1) {
-        printf("Executando nearest neighbor com MPI...\n");
         melhor_custo_local = nearest_neighbor(cidades, n, rank, melhor_rota);
     } else {
-        printf("Executando 2-opt com MPI...\n");
         melhor_custo_local = two_opt(cidades, n, rank, size, melhor_rota);
     }
     
