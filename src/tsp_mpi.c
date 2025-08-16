@@ -1,5 +1,5 @@
 #include <mpi.h>
-#include "utils.h"
+#include "utils_mpi.h"
 
 int main(int argc, char *argv[]) {
     int rank, size, n;
