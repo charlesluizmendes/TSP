@@ -6,6 +6,7 @@ int main(int argc, char *argv[]) {
     Cidade *cidades = NULL;
     int *melhor_rota = NULL;
     int algoritmo;
+    double t_inicio_global = 0.0, t_fim_global = 0.0;
     
     if (argc < 3) {
         printf("Uso: %s <arquivo.tsp> <algoritmo>\n", argv[0]);
@@ -64,6 +65,7 @@ int main(int argc, char *argv[]) {
     
     // Sincronizar todos os processos antes de iniciar
     MPI_Barrier(MPI_COMM_WORLD);
+    t_inicio_global = MPI_Wtime();
     
     // Processo 0 anuncia qual algoritmo será executado
     if (rank == 0) {
@@ -92,19 +94,8 @@ int main(int argc, char *argv[]) {
     
     // Sincronizar antes da coleta de métricas
     MPI_Barrier(MPI_COMM_WORLD);
-    
-    // DEBUG: Mostrar custo de cada processo antes da redução
-    if (rank == 0) {
-        printf("DEBUG: Processo %d encontrou custo %.2f\n", rank, melhor_custo_local);
-        fflush(stdout);
-    }
-    for (int p = 1; p < size; p++) {
-        if (rank == p) {
-            printf("DEBUG: Processo %d encontrou custo %.2f\n", rank, melhor_custo_local);
-            fflush(stdout);
-        }
-        MPI_Barrier(MPI_COMM_WORLD);
-    }
+    t_fim_global = MPI_Wtime();
+    double tempo_total = t_fim_global - t_inicio_global;
     
     // Encontrar melhor resultado e coletar métricas de tempo
     double melhor_custo_global = DBL_MAX;
@@ -121,10 +112,6 @@ int main(int argc, char *argv[]) {
     // Broadcast do melhor custo para todos os processos
     MPI_Bcast(&melhor_custo_global, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     
-    if (rank == 0) {
-        printf("DEBUG: Melhor custo global apos MPI_Reduce: %.2f\n", melhor_custo_global);
-        fflush(stdout);
-    }
     
     // Forçar flush de todos os buffers antes de imprimir rotas
     fflush(stdout);
@@ -137,15 +124,8 @@ int main(int argc, char *argv[]) {
     int eh_vencedor = 0;
     if (melhor_custo_local != DBL_MAX && fabs(melhor_custo_local - melhor_custo_global) < 1e-6) {
         eh_vencedor = 1;
-    }
+    }    
     
-    // DEBUG: Mostrar quais processos se consideram vencedores
-    if (eh_vencedor) {
-        printf("DEBUG: Processo %d se considera vencedor com custo %.2f (global=%.2f, diff=%.10f)\n", 
-               rank, melhor_custo_local, melhor_custo_global, 
-               fabs(melhor_custo_local - melhor_custo_global));
-        fflush(stdout);
-    }
     MPI_Barrier(MPI_COMM_WORLD);
     
     // Método mais simples: usar MPI_Allreduce para encontrar o menor rank que é vencedor
@@ -176,13 +156,7 @@ int main(int argc, char *argv[]) {
     if (rank == 0) {
         printf("\n=== DETALHES POR PROCESSO ===\n");
         for (int i = 0; i < size; i++) {
-            printf("Processo %d: custo=%.2f, tempo=%.6fs", i, todos_custos[i], todos_tempos[i]);
-            
-            // Marcar o processo vencedor
-            if (todos_custos[i] != -1.0 && todos_custos[i] == melhor_custo_global) {
-                printf(" ** VENCEDOR **");
-            }
-            printf("\n");
+            printf("Processo %d: custo=%.2f, tempo=%.6fs", i, todos_custos[i], todos_tempos[i], "\n");           
         }
         
         free(todos_custos);
@@ -211,6 +185,7 @@ int main(int argc, char *argv[]) {
         printf("\n=== METRICAS DE PARALELIZACAO ===\n");
         printf("Melhor custo encontrado: %.2f (Processo %d)\n", melhor_custo_global, processo_vencedor);
         printf("Numero de processos: %d\n", size);
+        printf("Tempo total (wall clock): %.6f segundos\n", tempo_total);
         printf("Tempo maximo: %.6f segundos\n", tempo_max);
         printf("Tempo medio:  %.6f segundos\n", tempo_medio);
         printf("Tempo minimo: %.6f segundos\n", tempo_min);
@@ -220,11 +195,20 @@ int main(int argc, char *argv[]) {
             double variacao_tempo = ((tempo_max - tempo_min) / tempo_max) * 100;
             double balanceamento = (tempo_min / tempo_max) * 100;
             double eficiencia_uso = (tempo_medio / tempo_max) * 100;
+
+            // "Speedup estimado: tempo sequencial ~ tempo_medio"
+            double speedup_real = (tempo_total > 0.0) ? (tempo_soma / tempo_total) : 0.0;
+            double eficiencia_paralela = (size > 0) ? (speedup_real / size) * 100.0 : 0.0;
             
             printf("\n=== BALANCEAMENTO DE CARGA ===\n");
             printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
-            printf("Balanceamento:     %.1f%%\n", balanceamento);
+            printf("Balanceamento:      %.1f%%\n", balanceamento);
             printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
+
+            printf("\n=== METRICAS DE PARALELIZACAO ===\n");
+            printf("Speedup estimado:   %.2fx\n", speedup_real);
+            printf("Eficiencia paralela: %.1f%%\n", eficiencia_paralela);
+            
         } else {
             printf("\n=== EXECUCAO SEQUENCIAL ===\n");
             printf("Executando com 1 processo (sem paralelizacao)\n");

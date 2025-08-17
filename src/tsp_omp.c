@@ -6,7 +6,7 @@ typedef struct {
     double custo;
     int *rota;
     int thread_id;
-    double tempo;  // Adicionar tempo individual
+    double tempo;   // Adicionar tempo individual
 } ResultadoThread;
 
 int main(int argc, char *argv[]) {
@@ -145,15 +145,7 @@ int main(int argc, char *argv[]) {
     
     double tempo_total = omp_get_wtime() - tempo_inicio;
     
-    // DEBUG: Mostrar custo de cada thread
-    for (int i = 0; i < num_threads; i++) {
-        if (resultados[i].custo == DBL_MAX) {
-            printf("DEBUG: Thread %d nao encontrou solucao valida\n", i);
-        } else {
-            printf("DEBUG: Thread %d encontrou custo %.2f\n", i, resultados[i].custo);
-        }
-    }
-
+    
     // Encontrar melhor resultado global
     double melhor_custo_global = DBL_MAX;
     int thread_vencedora = -1;
@@ -181,7 +173,7 @@ int main(int argc, char *argv[]) {
         }
         printf(" -> %d\n", resultados[thread_vencedora].rota[0]);
     } else {
-        printf("\nNenhuma thread encontrou solcao válida!\n");
+        printf("\nNenhuma thread encontrou solucao valida!\n");
     }
     
     // Calcular métricas de tempo CORRIGIDAS
@@ -212,15 +204,18 @@ int main(int argc, char *argv[]) {
             double eficiencia_uso = tempo_max > 0 ? (tempo_medio / tempo_max) * 100 : 0;
             
             // Speedup corrigido: tempo sequencial estimado / tempo paralelo real
-            double speedup_real = tempo_total > 0 ? (tempo_soma / num_threads) / tempo_total : 0;
-            double eficiencia_paralela = speedup_real / num_threads * 100;
+            double speedup_real = (tempo_total > 0.0) ? (tempo_soma / tempo_total) : 0.0;
+            double eficiencia_paralela = (num_threads > 0) ? (speedup_real / num_threads) * 100.0 : 0.0;
             
             printf("\n=== BALANCEAMENTO DE CARGA ===\n");
             printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
-            printf("Balanceamento:     %.1f%%\n", balanceamento);
+            printf("Balanceamento:      %.1f%%\n", balanceamento);
             printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
-            printf("Speedup estimado:  %.2fx\n", speedup_real);
+            
+            printf("\n=== METRICAS DE PARALELIZACAO ===\n");
+            printf("Speedup estimado:   %.2fx\n", speedup_real);
             printf("Eficiencia paralela: %.1f%%\n", eficiencia_paralela);
+
         } else {
             printf("\n=== EXECUCAO SEQUENCIAL ===\n");
             printf("Executando com 1 thread (sem paralelizacao)\n");
