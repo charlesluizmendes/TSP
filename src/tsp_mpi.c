@@ -6,7 +6,6 @@ int main(int argc, char *argv[]) {
     Cidade *cidades = NULL;
     int *melhor_rota = NULL;
     int algoritmo;
-    double t_inicio_global = 0.0, t_fim_global = 0.0;
     
     if (argc < 3) {
         printf("Uso: %s <arquivo.tsp> <algoritmo>\n", argv[0]);
@@ -65,7 +64,7 @@ int main(int argc, char *argv[]) {
     
     // Sincronizar todos os processos antes de iniciar
     MPI_Barrier(MPI_COMM_WORLD);
-    t_inicio_global = MPI_Wtime();
+    double tempo_inicio_global = MPI_Wtime();
     
     // Processo 0 anuncia qual algoritmo será executado
     if (rank == 0) {
@@ -94,8 +93,8 @@ int main(int argc, char *argv[]) {
     
     // Sincronizar antes da coleta de métricas
     MPI_Barrier(MPI_COMM_WORLD);
-    t_fim_global = MPI_Wtime();
-    double tempo_total = t_fim_global - t_inicio_global;
+    double tempo_fim_global = MPI_Wtime();
+    double tempo_total = tempo_fim_global - tempo_inicio_global;
     
     // Encontrar melhor resultado e coletar métricas de tempo
     double melhor_custo_global = DBL_MAX;
@@ -202,19 +201,19 @@ int main(int argc, char *argv[]) {
             double variacao_tempo = ((tempo_max - tempo_min) / tempo_max) * 100;
             double balanceamento = (tempo_min / tempo_max) * 100;
             double eficiencia_uso = (tempo_medio / tempo_max) * 100;
-
-            // "Speedup estimado: tempo sequencial ~ tempo_medio"
-            double speedup_real = (tempo_total > 0.0) ? (tempo_soma / tempo_total) : 0.0;
-            double eficiencia_paralela = (size > 0) ? (speedup_real / size) * 100.0 : 0.0;
             
             printf("\n=== BALANCEAMENTO DE CARGA ===\n");
             printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
             printf("Balanceamento:      %.1f%%\n", balanceamento);
             printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
 
-            printf("\n=== METRICAS DE PARALELIZACAO ===\n");
-            printf("Speedup estimado:   %.2fx\n", speedup_real);
-            printf("Eficiencia paralela: %.1f%%\n", eficiencia_paralela);
+            printf("\n=== SPEEDUP ===\n");
+            // Speedup estimado baseado no trabalho total vs tempo máximo
+            double speedup_estimado = tempo_soma / tempo_max;
+            double eficiencia_estimada = (speedup_estimado / size) * 100.0;
+            
+            printf("Speedup estimado: %.2fx\n", speedup_estimado);
+            printf("Eficiencia estimada: %.1f%%\n", eficiencia_estimada);
             
         } else {
             printf("\n=== EXECUCAO SEQUENCIAL ===\n");

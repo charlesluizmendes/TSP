@@ -214,9 +214,13 @@ int main(int argc, char *argv[]) {
             printf("Balanceamento:      %.1f%%\n", balanceamento);
             printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
             
-            printf("\n=== METRICAS DE PARALELIZACAO ===\n");
-            printf("Speedup estimado:   %.2fx\n", speedup_real);
-            printf("Eficiencia paralela: %.1f%%\n", eficiencia_paralela);
+            printf("\n=== SPEEDUP ===\n");
+            // Speedup estimado baseado no trabalho total vs tempo de parede
+            double speedup_estimado = tempo_soma / tempo_total;
+            double eficiencia_estimada = (speedup_estimado / num_threads) * 100.0;
+            
+            printf("Speedup estimado: %.2fx\n", speedup_estimado);
+            printf("Eficiencia estimada: %.1f%%\n", eficiencia_estimada);
 
         } else {
             printf("\n=== EXECUCAO SEQUENCIAL ===\n");
