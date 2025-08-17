@@ -158,7 +158,9 @@ int main(int argc, char *argv[]) {
         if (resultados[i].custo < melhor_custo_global) {
             melhor_custo_global = resultados[i].custo;
             thread_vencedora = i;
+            printf(" ** VENCEDOR **");
         }
+
         printf("\n");
     }
     

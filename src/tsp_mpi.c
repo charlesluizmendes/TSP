@@ -156,7 +156,14 @@ int main(int argc, char *argv[]) {
     if (rank == 0) {
         printf("\n=== DETALHES POR PROCESSO ===\n");
         for (int i = 0; i < size; i++) {
-            printf("Processo %d: custo=%.2f, tempo=%.6fs", i, todos_custos[i], todos_tempos[i], "\n");           
+            printf("Processo %d: custo=%.2f, tempo=%.6fs", i, todos_custos[i], todos_tempos[i]); 
+
+            // Marcar o processo vencedor 
+            if (todos_custos[i] != -1.0 && todos_custos[i] == melhor_custo_global)
+            { 
+                printf(" ** VENCEDOR **"); 
+            }
+            printf("\n");        
         }
         
         free(todos_custos);

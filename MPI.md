@@ -1,74 +1,89 @@
-# Resultados do MPI (Nearest Neighbor) (pcb442.tsp)
+# Resultados do **MPI** (Nearest Neighbor) — *pcb442.tsp*
 
-## ** Análise dos Resultados:**
+## **Análise dos Resultados**
 
-### **1. Melhoria da Qualidade da Solução com Paralelização:**
+### **1. Qualidade da solução vs número de processos**
 
-| Processos | Melhor Custo | Processo Vencedor | Melhoria vs 1 proc  |
-|-----------|--------------|-------------------|---------------------|
-| 1         | 61984.05     | 0                 | Baseline            |
-| 2         | 61749.42     | 1                 | **0.4% melhor**     |
-| 4         | 61738.92     | 3                 | **0.4% melhor**     |
-| 8         | **59737.76** | 6                 | **3.6% melhor**     |
-| 16        | **59737.76** | 6                 | **3.6% melhor**     |
-| 32        | **59737.76** | 6                 | **3.6% melhor**     |
-| 64        | **59737.76** | 6                 | **3.6% melhor**     |
-| 128       | **59685.52** | 107               | **3.7% melhor**     |
+> Baseline (1 processo): **61984.05**
 
-### **2. Padrão de Escalabilidade:**
+| Processos | Melhor Custo  | Processo vencedor | Melhoria vs 1 processo |
+|----------:|--------------:|------------------:|-----------------------:|
+| 1          | **61984.05**  | 0                 | Baseline                |
+| 2          | 61749.42      | 1                 | 0.4%                    |
+| 4          | 61738.92      | 3                 | 0.4%                    |
+| 8          | 59737.76      | 6                 | 3.6%                    |
+| 16         | 59737.76      | 6                 | 3.6%                    |
+| 32         | 59737.76      | 6                 | 3.6%                    |
+| 64         | 59737.76      | 6                 | 3.6%                    |
+| 128        | **59685.52**  | 107               | 3.7%                    |
 
-#### ** Sweet Spot: 8 processos**
-- **Maior salto de qualidade**: De 61738.92 → 59737.76 (diferença de ~2000!)
-- **Processo 6 consistentemente vencedor** de 8 até 64 processos
-- **128 processos**: Processo 107 encontra solução ainda melhor
+---
 
-#### ** Tendência de Melhoria:**
-- **1-4 processos**: Melhorias incrementais pequenas (~0.4%)
-- **8+ processos**: Salto significativo (~3.6%)
-- **128 processos**: Pico de qualidade (~3.7%)
+### **2. Padrão de Escalabilidade**
 
-### **3. Análise do Balanceamento:**
+| Processos | Tempo (s)  | Speedup **real** (vs 1P) | Eficiência paralela **real** |
+|----------:|-----------:|--------------------------:|------------------------------:|
+| 1          | 0.000290   | 1.00×                      | 100.0%                         |
+| 2          | **0.000233** | **1.24×**                  | **62.2%**                      |
+| 4          | 0.000298   | 0.97×                      | 24.3%                          |
+| 8          | 0.000482   | 0.60×                      | 7.5%                           |
+| 16         | 0.000798   | 0.36×                      | 2.3%                           |
+| 32         | 0.001901   | 0.15×                      | 0.5%                           |
+| 64         | 0.004907   | 0.06×                      | 0.1%                           |
+| 128        | 0.013478   | 0.02×                      | 0.0%                           |
 
-| Processos | Variação Tempo | Balanceamento | Eficiência |
-|-----------|----------------|---------------|------------|
-| 2         | 0.5%          | 99.5%         | 99.8%      |
-| 4         | 5.0%          | 95.0%         | 98.5%      |
-| 8         | **46.6%**     | **53.4%**     | **70.9%**  |
-| 16        | 27.8%         | 72.2%         | 83.7%      |
-| 32        | 35.2%         | 64.8%         | 83.2%      |
-| 64        | **58.5%**     | **41.5%**     | **64.3%**  |
-| 128       | **60.1%**     | **39.9%**     | **51.0%**  |
+> Observação: a ferramenta também reporta um “Speedup estimado” interno (abaixo), que **não coincide** com o **speedup real** calculado a partir do *wall clock* (0.000290 s ÷ tempo). Como o trabalho por processo é muito pequeno, a sobrecarga de inicialização/coordenação do MPI domina.
 
-### **4. Insights Importantes:**
+**Sweet spot de desempenho:**  
+- **2 processos** entregam o **menor tempo absoluto** (≈ **0.000233 s**).  
+- A partir de **8 processos**, o tempo **aumenta continuamente** — forte indício de overhead dominar o custo computacional do NN com 442 cidades.
 
-#### ** Vantagem da Paralelização no Nearest Neighbor:**
-- **Exploração de múltiplas cidades iniciais** simultaneamente
-- **Processo 6** (cidade inicial 6) encontra rota superior consistentemente
-- **Processo 107** (cidade inicial 107) descobre a melhor rota absoluta
+---
 
-#### ** Problemas de Balanceamento:**
-- **8+ processos**: Variação de tempo cresce significativamente
-- **Overhead de comunicação**: MPI_Gather, MPI_Reduce consomem tempo
-- **Diminuição da eficiência**: Com mais processos, menos trabalho útil por processo
+### **3. Análise do Balanceamento**
 
-#### ** Padrão "Lottery Effect":**
-- **Nearest Neighbor é determinístico** por cidade inicial
-- **Mais processos = mais "bilhetes de loteria"** (cidades iniciais testadas)
-- **Algumas cidades iniciais produzem rotas muito superiores**
+| Processos | Variação de tempo | Balanceamento | Eficiência de uso | Speedup estimado |
+|----------:|-------------------:|--------------:|------------------:|-----------------:|
+| 2          | 1.2%               | 98.8%        | 99.4%            |         1.98× |
+| 4          | 2.8%               | 97.2%        | 98.1%            |         3.14× |
+| 8          | 38.3%               | 61.7%        | 76.3%            |         5.25× |
+| 16         | 52.6%               | 47.4%        | 70.9%            |         8.57× |
+| 32         | 45.8%               | 54.2%        | 68.8%            |         7.68× |
+| 64         | 65.1%               | 34.9%        | 45.8%            |         5.74× |
+| 128        | 82.0%               | 18.0%        | 28.0%            |         4.09× |
 
-### **5. Recomendações:**
+**Leituras-chave:**
+- Até **4 processos**, o balanceamento é excelente (>97%), mas o ganho real de tempo já é baixo.  
+- De **8** a **32 processos**, crescem variação e overhead; em **64–128**, o **desequilíbrio** e o custo de coordenação/IO aumentam bastante.
 
-#### **Para Qualidade da Solução:**
-- **Use 8-16 processos** para o melhor custo-benefício
-- **128 processos** se qualidade máxima for prioridade
+---
 
-#### **Para Eficiência:**
-- **2-4 processos** para melhor balanceamento
-- **Evite 64+ processos** devido ao overhead excessivo
+### **4. Insights Importantes**
 
-#### **Trade-off Ideal:**
-- **8 processos**: Bom equilíbrio entre qualidade (+3.6%) e eficiência (70.9%)
+- **Qualidade melhora com mais processos:** o melhor custo cai de **61984.05** (1P) para **59685.52** (128P), **≈ 3.7%** melhor. Isso sugere que cada processo explora **inícios/seeds diferentes**.  
+- **Tempo piora com P alto:** o *wall time* mínimo ocorre em **2P**. A partir daí, a **latência de criação de processos, comunicação e IO** supera o ganho de paralelismo (o kernel NN é muito curto).  
+- **Diferença vs OpenMP:** no seu experimento OpenMP, o melhor custo foi **58952.97**, **menor** que qualquer custo obtido com MPI. Vale **alinhar a heurística** (mesmas cidades iniciais, mesma leitura de instância e cálculo de distâncias) para comparações justas.
 
-### **6. Conclusão:**
+---
 
-O MPI com Nearest Neighbor demonstra **super-linear speedup em qualidade** - não apenas executa mais rápido, mas encontra **soluções significativamente melhores** devido à exploração paralela de múltiplas cidades iniciais. O "processo sortudo" (6 ou 107) encontra caminhos superiores que o processo sequencial nunca descobriria! 🎯✨
+### **5. Recomendações**
+
+**Se a meta é tempo (latência mínima):**
+- Use **2 processos** (melhor *wall time*). **1 processo** também é muito bom e mais simples.
+- Em uma única máquina, prefira **OpenMP** para este problema pequeno; o overhead do MPI tende a dominar.
+
+**Se a meta é qualidade (menor custo):**
+- Rode com **vários processos (32–128)**, cada um com **seed/partição de cidades inicial diferente** (ex.: `start = rank, rank+P, …`).  
+- Estabeleça um **orçamento de tempo** e faça **várias rodadas curtas**, guardando o **melhor de N**.
+
+**Robustez/engenharia:**
+- Dê **seeds únicas por rank** e assegure **determinismo** opcional para reprodutibilidade.  
+- Reduza IO: **agregue no rank 0** via `MPI_Reduce`/**`MPI_MINLOC`** (min custo + rank) e imprima **apenas a rota vencedora**.  
+- Considere **híbrido MPI+OpenMP** (menos processos MPI, alguns threads por processo) para reduzir overhead e manter exploração.  
+- Faça *pinning* e mapeamento sensato (`--bind-to core`, `--map-by ppr:N:socket`) se estiver numa máquina multi-socket.
+
+---
+
+### **6. Conclusão**
+
+No *pcb442.tsp*, a abordagem MPI com Nearest Neighbor **melhora a qualidade** quando aumentamos o número de processos (até **≈3.7%** melhor custo), mas o **tempo total cresce** após **2 processos** devido ao overhead de paralelização. Para **latência**, **2 processos** (ou **1**) são ideais; para **qualidade**, usar muitos processos faz sentido, preferencialmente com **seeds/partições distintas** e **agregação eficiente** do melhor resultado. Alinhe a heurística com a versão OpenMP para garantir comparações equivalentes de custo.
