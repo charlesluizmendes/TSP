@@ -33,27 +33,19 @@ Para executar o programa e visualizar os resultados basta executar os comandos a
 ### MPI
 
 ```bash
-mpiexec -np 2 .\bin\tsp_mpi.exe .\data\ulysses16.tsp
+mpiexec -np 2 .\bin\tsp_mpi.exe .\data\berlin13.tsp
 ```
 
-- `mpiexec -np 8`: Executa o programa com **8 processos MPI**.
+- `mpiexec -np 2`: Executa o programa com **8 processos MPI**.
 - `.\bin\tsp_mpi.exe`: Caminho para o executável compilado com suporte a **MPI**.
-- `.\data\pcb442.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
-- **Argumento final:**
-  - `0`: Algoritmo **Força Bruta** (todas as permutações possíveis)
-  - `1`: Algoritmo **Nearest Neighbor** (Vizinho Mais Próximo)
-  - `2`: Algoritmo **2-opt** (otimização local)
+- `.\data\berlin13.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
 
 ### OpenM
 
 ```bash
-$env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\ulysses16.tsp
+$env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\berlin13.tsp
 ```
 
-- `$env:OMP_NUM_THREADS=8`: Define o uso de **8 threads paralelas** (para PowerShell).
+- `$env:OMP_NUM_THREADS=2`: Define o uso de **8 threads paralelas** (para PowerShell).
 - `.\bin\tsp_omp.exe`: Caminho para o executável compilado com suporte a **OpenMP**.
-- `.\data\pcb442.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
-- **Argumento final:**
-  - `0`: Algoritmo **Força Bruta** (todas as permutações possíveis)
-  - `1`: Algoritmo **Nearest Neighbor** (Vizinho Mais Próximo)
-  - `2`: Algoritmo **2-opt** (otimização local)
+- `.\data\berlin13.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
