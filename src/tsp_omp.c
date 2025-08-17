@@ -1,12 +1,11 @@
 #include <omp.h>
 #include "utils_omp.h"
 
-// Estrutura para armazenar resultado de cada thread
 typedef struct {
     double custo;
     int *rota;
     int thread_id;
-    double tempo;   // Adicionar tempo individual
+    double tempo;
 } ResultadoThread;
 
 int main(int argc, char *argv[]) {
@@ -50,7 +49,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
-    printf("TSP com %d cidades, algoritmo %d, %d threads OpenMP\n", n, algoritmo, num_threads);
+    printf("TSP com %d cidades, algoritmo %d, %d threads\n", n, algoritmo, num_threads);
     
     // Preparar estruturas para resultados
     ResultadoThread *resultados = malloc(num_threads * sizeof(ResultadoThread));
@@ -78,7 +77,9 @@ int main(int argc, char *argv[]) {
             resultados[tid].tempo = omp_get_wtime() - tempo_thread_inicio;
         }
         
-    } else if (algoritmo == 1) {
+    } 
+    else if (algoritmo == 1) 
+    {
         // CORRIGIDO: Nearest neighbor com medição de tempo correta
         printf("Executando nearest neighbor com OpenMP...\n");
         
@@ -128,7 +129,9 @@ int main(int argc, char *argv[]) {
         free(melhor_rota_thread);
         free(melhor_custo_thread);
         
-    } else {
+    } 
+    else 
+    {
         // 2-opt com OpenMP
         printf("Executando 2-opt com OpenMP...\n");
         
@@ -144,7 +147,6 @@ int main(int argc, char *argv[]) {
     }
     
     double tempo_total = omp_get_wtime() - tempo_inicio;
-    
     
     // Encontrar melhor resultado global
     double melhor_custo_global = DBL_MAX;
@@ -195,19 +197,15 @@ int main(int argc, char *argv[]) {
         printf("\n=== METRICAS DE PARALELIZACAO ===\n");
         printf("Melhor custo encontrado: %.2f (Thread %d)\n", melhor_custo_global, thread_vencedora);
         printf("Numero de threads: %d\n", num_threads);
-        printf("Tempo total (wall clock): %.6f segundos\n", tempo_total);
-        printf("Tempo maximo (thread): %.6f segundos\n", tempo_max);
-        printf("Tempo medio (thread):  %.6f segundos\n", tempo_medio);
-        printf("Tempo minimo (thread): %.6f segundos\n", tempo_min);
+        printf("Tempo total: %.6f segundos\n", tempo_total);
+        printf("Tempo maximo: %.6f segundos\n", tempo_max);
+        printf("Tempo medio:  %.6f segundos\n", tempo_medio);
+        printf("Tempo minimo: %.6f segundos\n", tempo_min);
         
         if (num_threads > 1 && tempo_total > 0) {
             double variacao_tempo = tempo_max > 0 ? ((tempo_max - tempo_min) / tempo_max) * 100 : 0;
             double balanceamento = tempo_max > 0 ? (tempo_min / tempo_max) * 100 : 0;
             double eficiencia_uso = tempo_max > 0 ? (tempo_medio / tempo_max) * 100 : 0;
-            
-            // Speedup corrigido: tempo sequencial estimado / tempo paralelo real
-            double speedup_real = (tempo_total > 0.0) ? (tempo_soma / tempo_total) : 0.0;
-            double eficiencia_paralela = (num_threads > 0) ? (speedup_real / num_threads) * 100.0 : 0.0;
             
             printf("\n=== BALANCEAMENTO DE CARGA ===\n");
             printf("Variacao de tempo: %.1f%%\n", variacao_tempo);

@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
         printf("\n=== METRICAS DE PARALELIZACAO ===\n");
         printf("Melhor custo encontrado: %.2f (Processo %d)\n", melhor_custo_global, processo_vencedor);
         printf("Numero de processos: %d\n", size);
-        printf("Tempo total (wall clock): %.6f segundos\n", tempo_total);
+        printf("Tempo total: %.6f segundos\n", tempo_total);
         printf("Tempo maximo: %.6f segundos\n", tempo_max);
         printf("Tempo medio:  %.6f segundos\n", tempo_medio);
         printf("Tempo minimo: %.6f segundos\n", tempo_min);
