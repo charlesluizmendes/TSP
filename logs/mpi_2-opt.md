@@ -49,10 +49,6 @@ Tempo minimo: 0.360596 segundos
 Variacao de tempo: 22.9%
 Balanceamento:      77.1%
 Eficiencia de uso: 88.5%
-
-=== SPEEDUP ===
-Speedup estimado: 1.77x
-Eficiencia estimada: 88.5%
 ```
 
 ```
@@ -83,10 +79,6 @@ Tempo minimo: 0.379341 segundos
 Variacao de tempo: 27.8%
 Balanceamento:      72.2%
 Eficiencia de uso: 92.9%
-
-=== SPEEDUP ===
-Speedup estimado: 3.72x
-Eficiencia estimada: 92.9%
 ```
 
 ```
@@ -121,10 +113,6 @@ Tempo minimo: 0.420889 segundos
 Variacao de tempo: 28.9%
 Balanceamento:      71.1%
 Eficiencia de uso: 90.9%
-
-=== SPEEDUP ===
-Speedup estimado: 7.27x
-Eficiencia estimada: 90.9%
 ```
 
 ```
@@ -167,10 +155,6 @@ Tempo minimo: 0.812929 segundos
 Variacao de tempo: 15.8%
 Balanceamento:      84.2%
 Eficiencia de uso: 94.9%
-
-=== SPEEDUP ===
-Speedup estimado: 15.18x
-Eficiencia estimada: 94.9%
 ```
 
 ```
@@ -229,10 +213,6 @@ Tempo minimo: 0.874068 segundos
 Variacao de tempo: 53.2%
 Balanceamento:      46.8%
 Eficiencia de uso: 81.6%
-
-=== SPEEDUP ===
-Speedup estimado: 26.11x
-Eficiencia estimada: 81.6%
 ```
 
 ```
@@ -323,10 +303,6 @@ Tempo minimo: 1.479390 segundos
 Variacao de tempo: 58.2%
 Balanceamento:      41.8%
 Eficiencia de uso: 74.0%
-
-=== SPEEDUP ===
-Speedup estimado: 47.39x
-Eficiencia estimada: 74.0%
 ```
 
 ```
@@ -481,8 +457,4 @@ Tempo minimo: 0.966033 segundos
 Variacao de tempo: 86.2%
 Balanceamento:      13.8%
 Eficiencia de uso: 60.6%
-
-=== SPEEDUP ===
-Speedup estimado: 77.58x
-Eficiencia estimada: 60.6%
 ```

@@ -33,22 +33,20 @@ Este relatório analisa a performance de dois algoritmos para o Problema do Caix
 - Melhoria de **1,75%** em relação à execução sequencial
 - Mais processos → mais iterações → maior exploração do espaço de soluções
 
-### 1.2 Performance Temporal e Speedup
+### 1.2 Performance Temporal
 
-| Processos | Tempo (s) | Speedup | Eficiência | Balanceamento |
-|-----------|-----------|---------|------------|---------------|
-| 1         | 0,440     | 1,00x   | 100,0%     | -             |
-| 2         | 0,468     | 1,77x   | 88,5%      | 77,1%         |
-| 4         | 0,526     | 3,72x   | 92,9%      | 72,2%         |
-| 8         | 0,592     | 7,27x   | 90,9%      | 71,1%         |
-| 16        | 0,965     | 15,18x  | 94,9%      | 84,2%         |
-| 32        | 1,866     | 26,11x  | 81,6%      | 46,8%         |
-| 64        | 3,535     | 47,39x  | 74,0%      | 41,8%         |
-| 128       | 7,012     | **77,58x** | 60,6%   | 13,8%         |
+| Processos | Tempo (s) | Balanceamento |
+|-----------|-----------|---------------|
+| 1         | 0,440     | -             |
+| 2         | 0,468     | 77,1%         |
+| 4         | 0,526     | 72,2%         |
+| 8         | 0,592     | 71,1%         |
+| 16        | 0,965     | 84,2%         |
+| 32        | 1,866     | 46,8%         |
+| 64        | 3,535     | 41,8%         |
+| 128       | 7,012     | 13,8%         |
 
 **Tendências Identificadas:**
-- **Speedup**: Crescimento consistente até 128 processos
-- **Eficiência**: Declínio após 16 processos devido ao overhead de comunicação
 - **Balanceamento**: Deterioração significativa com muitos processos (variação de carga de trabalho)
 
 ---
@@ -75,20 +73,19 @@ Este relatório analisa a performance de dois algoritmos para o Problema do Caix
 
 ### 2.2 Performance Temporal e Speedup
 
-| Processos | Tempo (s) | Speedup | Eficiência | Balanceamento |
-|-----------|-----------|---------|------------|---------------|
-| 1         | 0,000231  | 1,00x   | 100,0%     | -             |
-| 2         | 0,000238  | 1,99x   | 99,7%      | 99,3%         |
-| 4         | 0,000298  | 3,60x   | 90,0%      | 79,4%         |
-| 8         | 0,000384  | 6,91x   | 86,4%      | 79,5%         |
-| 16        | 0,000843  | 9,06x   | 56,6%      | 45,0%         |
-| 32        | 0,002019  | 21,89x  | 68,4%      | 54,9%         |
-| 64        | 0,006372  | 41,94x  | 65,5%      | 53,4%         |
-| 128       | 0,015093  | **34,10x** | 26,6%   | 20,6%         |
+| Processos | Tempo (s) | Balanceamento |
+|-----------|-----------|---------------|
+| 1         | 0,000231  | -             |
+| 2         | 0,000238  | 99,3%         |
+| 4         | 0,000298  | 79,4%         |
+| 8         | 0,000384  | 79,5%         |
+| 16        | 0,000843  | 45,0%         |
+| 32        | 0,002019  | 54,9%         |
+| 64        | 0,006372  | 53,4%         |
+| 128       | 0,015093  | 20,6%         |
 
 **Características:**
 - **Execução muito rápida**: Tempos em microssegundos/milissegundos
-- **Speedup irregular**: Pico em 64 processos, depois declínio
 - **Eficiência baixa**: Com muitos processos, o overhead domina o tempo útil
 
 ---
@@ -99,10 +96,10 @@ Este relatório analisa a performance de dois algoritmos para o Problema do Caix
 
 | Aspecto                    | 2-opt           | Nearest Neighbor |
 |----------------------------|-----------------|------------------|
-| **Melhor Custo**          | 53.383,74       | 59.685,52        |
-| **Diferença de Qualidade**| -               | +11,8% pior      |
-| **Tempo (128 proc.)**     | 7,012s          | 0,015s           |
-| **Diferença de Tempo**    | -               | **467x mais rápido** |
+| **Melhor Custo**           | 53.383,74       | 59.685,52        |
+| **Diferença de Qualidade** | -               | +11,8% pior      |
+| **Tempo (128 proc.)**      | 7,012s          | 0,015s           |
+| **Diferença de Tempo**     | -               | **467x mais rápido** |
 
 ### 3.2 Escalabilidade
 
@@ -126,7 +123,6 @@ Este relatório analisa a performance de dois algoritmos para o Problema do Caix
 ### 4.2 Impacto na Performance
 
 - **Eficiência comprometida**: Processos ociosos aguardando os mais lentos
-- **Speedup subótimo**: Potencial não realizado devido ao desbalanceamento
 
 ---
 
@@ -170,7 +166,6 @@ O estudo demonstra claramente o trade-off entre qualidade e velocidade na resolu
 
 ### Métricas Finais de Sucesso
 
-- **Melhor speedup alcançado**: 77,58x (2-opt, 128 processos)
 - **Melhor eficiência sustentada**: 94,9% (2-opt, 16 processos)  
 - **Melhor solução encontrada**: 53.383,74 (melhoria de 1,75% vs sequencial)
 - **Tempo mínimo de execução**: 0,015s (Nearest Neighbor, 128 processos)

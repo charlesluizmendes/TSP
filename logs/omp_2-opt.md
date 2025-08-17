@@ -47,10 +47,6 @@ Tempo minimo (thread): 0.051000 segundos
 Variacao de tempo: 0.0%
 Balanceamento:      100.0%
 Eficiencia de uso: 100.0%
-
-=== SPEEDUP ===
-Speedup estimado: 2.00x
-Eficiencia estimada: 100.0%
 ```
 
 ```
@@ -80,10 +76,6 @@ Tempo minimo (thread): 0.026000 segundos
 Variacao de tempo: 0.0%
 Balanceamento:      100.0%
 Eficiencia de uso: 100.0%
-
-=== SPEEDUP ===
-Speedup estimado: 3.85x
-Eficiencia estimada: 96.3%
 ```
 
 ```
@@ -117,10 +109,6 @@ Tempo minimo (thread): 0.016000 segundos
 Variacao de tempo: 0.0%
 Balanceamento:      100.0%
 Eficiencia de uso: 100.0%
-
-=== SPEEDUP ===
-Speedup estimado: 7.53x
-Eficiencia estimada: 94.1%
 ```
 
 ```
@@ -162,10 +150,6 @@ Tempo minimo (thread): 0.013000 segundos
 Variacao de tempo: 0.0%
 Balanceamento:      100.0%
 Eficiencia de uso: 100.0%
-
-=== SPEEDUP ===
-Speedup estimado: 14.86x
-Eficiencia estimada: 92.9%
 ```
 
 ```
@@ -223,10 +207,6 @@ Tempo minimo (thread): 0.009000 segundos
 Variacao de tempo: 30.8%
 Balanceamento:      69.2%
 Eficiencia de uso: 95.0%
-
-=== SPEEDUP ===
-Speedup estimado: 28.21x
-Eficiencia estimada: 88.2%
 ```
 
 ```
@@ -316,10 +296,6 @@ Tempo minimo (thread): 0.005000 segundos
 Variacao de tempo: 61.5%
 Balanceamento:      38.5%
 Eficiencia de uso: 89.4%
-
-=== SPEEDUP ===
-Speedup estimado: 46.50x
-Eficiencia estimada: 72.7%
 ```
 
 ```
@@ -473,8 +449,4 @@ Tempo minimo (thread): 0.002000 segundos
 Variacao de tempo: 84.6%
 Balanceamento:      15.4%
 Eficiencia de uso: 53.6%
-
-=== SPEEDUP ===
-Speedup estimado: 46.95x
-Eficiencia estimada: 36.7%
 ```

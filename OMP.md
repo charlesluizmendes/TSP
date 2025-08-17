@@ -35,20 +35,18 @@ Este relatório analisa a performance do algoritmo **Nearest Neighbor** para o P
 
 ### 1.2 Performance Temporal e Speedup
 
-| Threads | Tempo (s) | Speedup | Eficiência | Balanceamento |
-|---------|-----------|---------|------------|---------------|
-| 1       | 0,102     | 1,00x   | 100,0%     | -             |
-| 2       | 0,050     | 1,96x   | 98,0%      | 100,0%        |
-| 4       | 0,026     | 3,85x   | 96,3%      | 100,0%        |
-| 8       | 0,016     | 8,00x   | **100,0%** | 100,0%        |
-| 16      | 0,013     | 14,86x  | 92,9%      | 100,0%        |
-| 32      | 0,013     | 28,79x  | 90,0%      | 69,2%         |
-| 64      | 0,012     | 36,81x  | 57,5%      | 25,0%         |
-| 128     | 0,013     | **46,95x** | 36,7%   | 7,7%          |
+| Threads | Tempo (s) | Balanceamento |
+|---------|-----------|---------------|
+| 1       | 0,102     | -             |
+| 2       | 0,050     | 100,0%        |
+| 4       | 0,026     | 100,0%        |
+| 8       | 0,016     | 100,0%        |
+| 16      | 0,013     | 100,0%        |
+| 32      | 0,013     | 69,2%         |
+| 64      | 0,012     | 25,0%         |
+| 128     | 0,013     | 7,7%          |
 
 **Tendências Identificadas:**
-- **Speedup**: Crescimento excelente até 32 threads, depois saturação
-- **Eficiência**: Perfeita até 8 threads, degradação gradual após 32 threads
 - **Balanceamento**: Excelente até 16 threads, deterioração severa com muitas threads
 
 ---
@@ -59,12 +57,10 @@ Este relatório analisa a performance do algoritmo **Nearest Neighbor** para o P
 
 **Fase Linear Perfeita (1-8 threads):**
 - Eficiência ≥ 96%
-- Speedup quase ideal (8,00x com 8 threads)
 - Balanceamento perfeito (100%)
 
 **Fase Linear Forte (16-32 threads):**
 - Eficiência > 90%
-- Speedup excelente (28,79x com 32 threads)
 - Balanceamento ainda aceitável (>69%)
 
 **Fase de Saturação (64-128 threads):**

@@ -206,14 +206,6 @@ int main(int argc, char *argv[]) {
             printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
             printf("Balanceamento:      %.1f%%\n", balanceamento);
             printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
-
-            printf("\n=== SPEEDUP ===\n");
-            // Speedup estimado baseado no trabalho total vs tempo máximo
-            double speedup_estimado = tempo_soma / tempo_max;
-            double eficiencia_estimada = (speedup_estimado / size) * 100.0;
-            
-            printf("Speedup estimado: %.2fx\n", speedup_estimado);
-            printf("Eficiencia estimada: %.1f%%\n", eficiencia_estimada);
             
         } else {
             printf("\n=== EXECUCAO SEQUENCIAL ===\n");
