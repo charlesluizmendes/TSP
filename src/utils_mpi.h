@@ -178,7 +178,7 @@ double forca_bruta(Cidade *cidades, int n, int rank, int size, int *melhor_rota)
     
     if (rank == 0) {
         printf("Permutacoes processadas: %llu\n", trabalho_total);
-        printf("Distribuicao: min=%llu, max=%llu, variação=%.1f%%\n", 
+        printf("Distribuicao: min=%llu, max=%llu, variacao=%.1f%%\n", 
                trabalho_min, trabalho_max, 
                100.0 * (trabalho_max - trabalho_min) / trabalho_max);
     }

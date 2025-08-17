@@ -33,9 +33,9 @@ Para executar o programa e visualizar os resultados basta executar os comandos a
 ### MPI
 
 ```bash
-mpiexec -np 32 .\bin\tsp_mpi.exe .\data\berlin52.tsp 0
-mpiexec -np 16 .\bin\tsp_mpi.exe .\data\kroA100.tsp 1
-mpiexec -np 8 .\bin\tsp_mpi.exe .\data\pcb442.tsp 2
+mpiexec -np 8 .\bin\tsp_mpi.exe .\data\gr14.tsp.tsp 0
+mpiexec -np 4 .\bin\tsp_mpi.exe .\data\kroA100.tsp 1
+mpiexec -np 2 .\bin\tsp_mpi.exe .\data\pcb442.tsp 2
 ```
 
 - `mpiexec -np 8`: Executa o programa com **8 processos MPI**.
@@ -49,9 +49,9 @@ mpiexec -np 8 .\bin\tsp_mpi.exe .\data\pcb442.tsp 2
 ### OpenM
 
 ```bash
-$env:OMP_NUM_THREADS=32; .\bin\tsp_omp.exe .\data\berlin52.tsp 0
-$env:OMP_NUM_THREADS=16; .\bin\tsp_omp.exe .\data\kroA100.tsp 1
-$env:OMP_NUM_THREADS=8; .\bin\tsp_omp.exe .\data\pcb442.tsp 2
+$env:OMP_NUM_THREADS=8; .\bin\tsp_omp.exe .\data\gr14.tsp.tsp 0
+$env:OMP_NUM_THREADS=4; .\bin\tsp_omp.exe .\data\kroA100.tsp 1
+$env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\pcb442.tsp 2
 ```
 
 - `$env:OMP_NUM_THREADS=8`: Define o uso de **8 threads paralelas** (para PowerShell).

@@ -2,7 +2,7 @@
 
 ## ** Análise dos Resultados**
 
-### **1) Qualidade da solução vs número de threads**
+### **1. Qualidade da solução vs número de threads**
 
 > Baseline (1 thread): **58952.97**
 
