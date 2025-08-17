@@ -1,222 +1,118 @@
+// tsp_mpi.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
 #include <mpi.h>
-#include "utils_mpi.h"
+
+#define MAX 20
+
+typedef struct { int id; double x, y; } City;
+
+City cities[MAX];
+int N;
+
+double dist(City a, City b) {
+   return round(sqrt((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y)));
+}
+
+void read_tsp(const char *filename) {
+   FILE *f = fopen(filename, "r");
+   char line[100];
+   while (fgets(line, sizeof(line), f))
+       if (strncmp(line, "NODE_COORD_SECTION", 18) == 0) break;
+   while (fscanf(f, "%d %lf %lf", &cities[N].id, &cities[N].x, &cities[N].y) == 3)
+       N++;
+   fclose(f);
+}
+
+void tsp(int level, double cost, int *path, int *vis, double *best_cost, int *best_path) {
+   if (level == N) {
+       cost += dist(cities[path[N-1]], cities[path[0]]);
+       if (cost < *best_cost) {
+           *best_cost = cost;
+           memcpy(best_path, path, N * sizeof(int));
+       }
+       return;
+   }
+   for (int i = 0; i < N; i++) {
+       if (!vis[i]) {
+           vis[i] = 1;
+           path[level] = i;
+           tsp(level + 1, cost + dist(cities[path[level-1]], cities[i]), path, vis, best_cost, best_path);
+           vis[i] = 0;
+       }
+   }
+}
+
+void print_result(const char *label, int *path, double cost, double time) {
+   printf("%s:\n", label);
+   for (int i = 0; i < N; i++) printf("%d ", cities[path[i]].id);
+   printf("%d\n", cities[path[0]].id);
+   printf("Custo: %.0f\n", cost);
+   printf("Tempo: %.6f s\n\n", time);
+}
 
 int main(int argc, char *argv[]) {
-    int rank, size, n;
-    Cidade *cidades = NULL;
-    int *melhor_rota = NULL;
-    int algoritmo;
-    
-    if (argc < 3) {
-        printf("Uso: %s <arquivo.tsp> <algoritmo>\n", argv[0]);
-        printf("Algoritmos: 0=forca bruta, 1=nearest neighbor, 2=2-opt\n");
-        return 1;
-    }
-    
-    algoritmo = atoi(argv[2]);
-    
-    MPI_Init(&argc, &argv);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
-    
-    // Processo 0 lê o arquivo
-    if (rank == 0) {
-        // Primeira passada: descobrir quantas cidades há
-        if (descobrir_tamanho_instancia(argv[1], &n) != 0) {
-            printf("Erro ao ler dimensões do arquivo %s\n", argv[1]);
-            MPI_Abort(MPI_COMM_WORLD, 1);
-        }
-        
-        // Alocar dinamicamente baseado no tamanho real
-        cidades = malloc(n * sizeof(Cidade));
-        if (!cidades) {
-            printf("Erro ao alocar memoria para %d cidades\n", n);
-            MPI_Abort(MPI_COMM_WORLD, 1);
-        }
-        
-        // Segunda passada: ler as coordenadas
-        if (ler_instancia(argv[1], cidades, &n) != 0) {
-            printf("Erro ao ler arquivo %s\n", argv[1]);
-            free(cidades);
-            MPI_Abort(MPI_COMM_WORLD, 1);
-        }
-        
-        printf("TSP com %d cidades, algoritmo %d, %d processos\n", n, algoritmo, size);
-    }
-    
-    // Enviar dados para todos os processos
-    MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&algoritmo, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    
-    if (rank != 0) {
-        cidades = malloc(n * sizeof(Cidade));
-        if (!cidades) {
-            MPI_Abort(MPI_COMM_WORLD, 1);
-        }
-    }
-    melhor_rota = malloc(n * sizeof(int));
-    if (!melhor_rota) {
-        free(cidades);
-        MPI_Abort(MPI_COMM_WORLD, 1);
-    }
-    
-    MPI_Bcast(cidades, n * sizeof(Cidade), MPI_BYTE, 0, MPI_COMM_WORLD);
-    
-    // Sincronizar todos os processos antes de iniciar
-    MPI_Barrier(MPI_COMM_WORLD);
-    double tempo_inicio_global = MPI_Wtime();
-    
-    // Processo 0 anuncia qual algoritmo será executado
-    if (rank == 0) {
-        if (algoritmo == 0) {
-            printf("Executando forca bruta com MPI...\n");
-        } else if (algoritmo == 1) {
-            printf("Executando nearest neighbor com MPI...\n");
-        } else {
-            printf("Executando 2-opt com MPI...\n");
-        }
-    }
+   int rank, size;
+   MPI_Init(&argc, &argv);
+   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    // Executar algoritmo escolhido
-    double melhor_custo_local;
-    double tempo_algoritmo_inicio = MPI_Wtime();
-    
-    if (algoritmo == 0) {
-        melhor_custo_local = forca_bruta(cidades, n, rank, size, melhor_rota);
-    } else if (algoritmo == 1) {
-        melhor_custo_local = nearest_neighbor(cidades, n, rank, melhor_rota);
-    } else {
-        melhor_custo_local = two_opt(cidades, n, rank, size, melhor_rota);
-    }
-    
-    double tempo_algoritmo = MPI_Wtime() - tempo_algoritmo_inicio;
-    
-    // Sincronizar antes da coleta de métricas
-    MPI_Barrier(MPI_COMM_WORLD);
-    double tempo_fim_global = MPI_Wtime();
-    double tempo_total = tempo_fim_global - tempo_inicio_global;
-    
-    // Encontrar melhor resultado e coletar métricas de tempo
-    double melhor_custo_global = DBL_MAX;
-    double tempo_max, tempo_min, tempo_soma;
-    
-    // Garantir que custos inválidos não afetem o resultado
-    double custo_para_reduce = (melhor_custo_local == DBL_MAX) ? 1e20 : melhor_custo_local;
-    
-    MPI_Reduce(&custo_para_reduce, &melhor_custo_global, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
-    MPI_Reduce(&tempo_algoritmo, &tempo_max, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-    MPI_Reduce(&tempo_algoritmo, &tempo_min, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
-    MPI_Reduce(&tempo_algoritmo, &tempo_soma, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-    
-    // Broadcast do melhor custo para todos os processos
-    MPI_Bcast(&melhor_custo_global, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    
-    
-    // Forçar flush de todos os buffers antes de imprimir rotas
-    fflush(stdout);
-    MPI_Barrier(MPI_COMM_WORLD);
-    
-    // Identificar qual processo encontrou a melhor solução - VERSÃO CORRIGIDA
-    int processo_vencedor = -1;
-    
-    // Cada processo verifica se tem o melhor custo (com tolerância)
-    int eh_vencedor = 0;
-    if (melhor_custo_local != DBL_MAX && fabs(melhor_custo_local - melhor_custo_global) < 1e-6) {
-        eh_vencedor = 1;
-    }    
-    
-    MPI_Barrier(MPI_COMM_WORLD);
-    
-    // Método mais simples: usar MPI_Allreduce para encontrar o menor rank que é vencedor
-    int rank_vencedor = eh_vencedor ? rank : INT_MAX;
-    int rank_vencedor_global;
-    
-    MPI_Allreduce(&rank_vencedor, &rank_vencedor_global, 1, MPI_INT, MPI_MIN, MPI_COMM_WORLD);
-    
-    if (rank_vencedor_global != INT_MAX) {
-        processo_vencedor = rank_vencedor_global;
-    }
-    
-    // Coletar detalhes de todos os processos para mostrar
-    double *todos_custos = NULL;
-    double *todos_tempos = NULL;
-    
-    if (rank == 0) {
-        todos_custos = malloc(size * sizeof(double));
-        todos_tempos = malloc(size * sizeof(double));
-    }
-    
-    // Coletar custos e tempos de todos os processos
-    double custo_para_gather = (melhor_custo_local == DBL_MAX) ? -1.0 : melhor_custo_local;
-    MPI_Gather(&custo_para_gather, 1, MPI_DOUBLE, todos_custos, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Gather(&tempo_algoritmo, 1, MPI_DOUBLE, todos_tempos, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    
-    // Processo 0 mostra detalhes de todos os processos
-    if (rank == 0) {
-        printf("\n=== DETALHES POR PROCESSO ===\n");
-        for (int i = 0; i < size; i++) {
-            printf("Processo %d: custo=%.2f, tempo=%.6fs", i, todos_custos[i], todos_tempos[i]); 
+   if (argc < 2) {
+       if (rank == 0) printf("Uso: %s arquivo.tsp\n", argv[0]);
+       MPI_Finalize(); return 1;
+   }
 
-            // Marcar o processo vencedor 
-            if (todos_custos[i] != -1.0 && todos_custos[i] == melhor_custo_global)
-            { 
-                printf(" ** VENCEDOR **"); 
-            }
-            printf("\n");        
-        }
-        
-        free(todos_custos);
-        free(todos_tempos);
-    }
-    
-    // Apenas o processo vencedor mostra sua rota
-    if (rank == processo_vencedor) {
-        printf("\n=== ROTA VENCEDORA (Processo %d) ===\n", rank);
-        printf("Custo: %.2f\n", melhor_custo_local);
-        printf("Rota: ");
-        for (int i = 0; i < n; i++) {
-            printf("%d", melhor_rota[i]);
-            if (i < n - 1) printf(" -> ");
-        }
-        printf(" -> %d\n", melhor_rota[0]);
-        fflush(stdout);
-    }
-    
-    MPI_Barrier(MPI_COMM_WORLD);
-    
-    // AGORA sim imprimir métricas (APENAS processo 0)
-    if (rank == 0) {
-        double tempo_medio = tempo_soma / size;
-        
-        printf("\n=== METRICAS DE PARALELIZACAO ===\n");
-        printf("Melhor custo encontrado: %.2f (Processo %d)\n", melhor_custo_global, processo_vencedor);
-        printf("Numero de processos: %d\n", size);
-        printf("Tempo total: %.6f segundos\n", tempo_total);
-        printf("Tempo maximo: %.6f segundos\n", tempo_max);
-        printf("Tempo medio:  %.6f segundos\n", tempo_medio);
-        printf("Tempo minimo: %.6f segundos\n", tempo_min);
-        
-        // Só mostrar métricas de balanceamento se houver múltiplos processos
-        if (size > 1) {
-            double variacao_tempo = ((tempo_max - tempo_min) / tempo_max) * 100;
-            double balanceamento = (tempo_min / tempo_max) * 100;
-            double eficiencia_uso = (tempo_medio / tempo_max) * 100;
-            
-            printf("\n=== BALANCEAMENTO DE CARGA ===\n");
-            printf("Variacao de tempo: %.1f%%\n", variacao_tempo);
-            printf("Balanceamento:      %.1f%%\n", balanceamento);
-            printf("Eficiencia de uso: %.1f%%\n", eficiencia_uso);
-            
-        } else {
-            printf("\n=== EXECUCAO SEQUENCIAL ===\n");
-            printf("Executando com 1 processo (sem paralelizacao)\n");
-        }
-        
-        fflush(stdout); // Garantir que métricas sejam impressas
-    }
-    
-    free(cidades);
-    free(melhor_rota);
-    MPI_Finalize();
-    return 0;
+   if (rank == 0) read_tsp(argv[1]);
+   MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
+   MPI_Bcast(cities, sizeof(City)*MAX, MPI_BYTE, 0, MPI_COMM_WORLD);
+
+   double best_cost_seq = 1e9, best_cost_par = 1e9;
+   int best_seq[MAX], best_par[MAX];
+   double t1, t2, t3, t4;
+
+   if (rank == 0) {
+       int path[MAX] = {0}, vis[MAX] = {0};
+       vis[0] = 1;
+       t1 = MPI_Wtime();
+       tsp(1, 0, path, vis, &best_cost_seq, best_seq);
+       t2 = MPI_Wtime();
+   }
+
+   double local_best = 1e9;
+   int local_path[MAX];
+   int path[MAX], vis[MAX];
+   t3 = MPI_Wtime();
+
+   for (int i = 1 + rank; i < N; i += size) {
+       memset(vis, 0, sizeof(vis));
+       path[0] = 0; path[1] = i;
+       vis[0] = vis[i] = 1;
+       tsp(2, dist(cities[0], cities[i]), path, vis, &local_best, local_path);
+   }
+
+   double global_best;
+   int best_rank;
+   struct { double cost; int rank; } local_min = {local_best, rank};
+   struct { double cost; int rank; } global_min;
+   
+   MPI_Allreduce(&local_min, &global_min, 1, MPI_DOUBLE_INT, MPI_MINLOC, MPI_COMM_WORLD);
+   MPI_Bcast(local_path, MAX, MPI_INT, global_min.rank, MPI_COMM_WORLD);
+   
+   t4 = MPI_Wtime();
+
+   if (rank == 0) {
+       print_result("Sequencial", best_seq, best_cost_seq, t2 - t1);
+       print_result("MPI", local_path, global_min.cost, t4 - t3);
+       double tempo_seq = t2 - t1;
+       double tempo_par = t4 - t3;
+       double speedup = tempo_seq / tempo_par;
+       double eficiencia = (speedup / size) * 100.0;
+       printf("Speedup: %.2fx\n", speedup);
+       printf("Eficiencia: %.2f%%\n", eficiencia);
+   }
+
+   MPI_Finalize();
+   return 0;
 }
