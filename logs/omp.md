@@ -14,37 +14,13 @@
 
 ```
 
-### 5 Threads:
+### 8 Threads:
 
 ```
 
 ```
 
-### 10 Threads:
-
-```
-
-```
-
-### 20 Threads:
-
-```
-
-```
-
-### 25 Threads:
-
-```
-
-```
-
-### 50 Threads:
-
-```
-
-```
-
-### 100 Threads:
+### 16 Threads:
 
 ```
 

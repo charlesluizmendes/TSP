@@ -16,6 +16,8 @@ Para compilar o programa, basta executar os seguintes comandos abaixo:
 
 ### MPI
 
+(Windows)
+
 Abordagem de Força Bruta:
 
 ```bash
@@ -29,6 +31,8 @@ Algoritmo de Nearest Neighbor:
 ```
 
 ### OpenMP
+
+(Windows)
 
 Abordagem de Força Bruta:
 
