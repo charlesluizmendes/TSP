@@ -16,72 +16,98 @@ int N;
 int best_seq[MAX], best_omp[MAX];
 double best_cost_seq = 1e9, best_cost_omp = 1e9;
 
-double dist(City a, City b) {
-    return round(sqrt((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y)));
+unsigned long long seq_leaves = 0ULL;
+unsigned long long omp_leaves = 0ULL;
+
+static inline int dist(City a, City b) {
+    double dx = a.x - b.x, dy = a.y - b.y;
+    return (int)llround(sqrt(dx*dx + dy*dy)); // EUC_2D
 }
 
 void read_tsp(const char *filename) {
     FILE *f = fopen(filename, "r");
+    if (!f) { perror("fopen"); exit(1); }
     char line[100];
     while (fgets(line, sizeof(line), f))
         if (strncmp(line, "NODE_COORD_SECTION", 18) == 0) break;
-    while (fscanf(f, "%d %lf %lf", &cities[N].id, &cities[N].x, &cities[N].y) == 3)
+    while (N < MAX && fscanf(f, "%d %lf %lf", &cities[N].id, &cities[N].x, &cities[N].y) == 3)
         N++;
     fclose(f);
 }
 
-void tsp_seq(int level, double cost, int *path, int *vis) {
+void tsp_seq_dfs(int level, int cost, int *path, unsigned char *vis,
+                 double *best_cost, int *best_path,
+                 unsigned long long *leaf_count)
+{
     if (level == N) {
         cost += dist(cities[path[N-1]], cities[path[0]]);
-        if (cost < best_cost_seq) {
-            best_cost_seq = cost;
-            memcpy(best_seq, path, N * sizeof(int));
+        if (cost < *best_cost) {
+            *best_cost = cost;
+            memcpy(best_path, path, N * sizeof(int));
         }
+        if (leaf_count) (*leaf_count)++;
         return;
     }
+    int prev = path[level-1];
     for (int i = 0; i < N; i++) {
         if (!vis[i]) {
             vis[i] = 1;
             path[level] = i;
-            tsp_seq(level + 1, cost + dist(cities[path[level-1]], cities[i]), path, vis);
+            tsp_seq_dfs(level + 1, cost + dist(cities[prev], cities[i]),
+                        path, vis, best_cost, best_path, leaf_count);
             vis[i] = 0;
         }
     }
 }
 
-void dfs(int level, double cost, int *path, int *vis, double *local_cost, int *local_best) {
+void tsp_seq_run() {
+    unsigned char vis[MAX] = {0};
+    int path[MAX] = {0};
+    path[0] = 0; vis[0] = 1;
+    tsp_seq_dfs(1, 0, path, vis, &best_cost_seq, best_seq, &seq_leaves);
+}
+
+static void dfs_omp(int level, int cost, int *path, unsigned char *vis,
+                    double *local_cost, int *local_best,
+                    unsigned long long *leaf_count)
+{
     if (level == N) {
-        cost += dist(cities[path[N-1]], cities[0]);
+        cost += dist(cities[path[N-1]], cities[path[0]]);
         if (cost < *local_cost) {
             *local_cost = cost;
             memcpy(local_best, path, N * sizeof(int));
         }
+        if (leaf_count) (*leaf_count)++;
         return;
     }
+    int prev = path[level-1];
     for (int j = 0; j < N; j++) {
         if (!vis[j]) {
             vis[j] = 1;
             path[level] = j;
-            dfs(level + 1, cost + dist(cities[path[level-1]], cities[j]), path, vis, local_cost, local_best);
+            dfs_omp(level + 1, cost + dist(cities[prev], cities[j]),
+                    path, vis, local_cost, local_best, leaf_count);
             vis[j] = 0;
         }
     }
 }
 
-void tsp_omp() {
+void tsp_omp_run() {
     #pragma omp parallel
     {
-        int path[MAX], vis[MAX], local_best[MAX];
+        int path[MAX], local_best[MAX];
+        unsigned char vis[MAX];
         double local_cost = 1e9;
+        unsigned long long local_leaves = 0ULL;
 
-        #pragma omp for
+        #pragma omp for schedule(static)
         for (int i = 1; i < N; i++) {
-            memset(vis, 0, sizeof(vis));
-            path[0] = 0;
-            path[1] = i;
-            vis[0] = vis[i] = 1;
+            memset(vis, 0, N * sizeof(unsigned char));
+            path[0] = 0; path[1] = i;
+            vis[0] = 1; vis[i] = 1;
 
-            dfs(2, dist(cities[0], cities[i]), path, vis, &local_cost, local_best);
+            dfs_omp(2, dist(cities[0], cities[i]), path, vis,
+                    &local_cost, local_best, &local_leaves);
         }
 
         #pragma omp critical
@@ -91,15 +117,25 @@ void tsp_omp() {
                 memcpy(best_omp, local_best, N * sizeof(int));
             }
         }
+
+        #pragma omp atomic
+        omp_leaves += local_leaves;
     }
 }
 
-void print_result(const char *label, int *path, double cost, double time) {
+static void print_result(const char *label, int *path, double cost, 
+                    double time_s, unsigned long long tours) 
+{
     printf("%s:\n", label);
     for (int i = 0; i < N; i++) printf("%d ", cities[path[i]].id);
     printf("%d\n", cities[path[0]].id);
     printf("Custo: %.0f\n", cost);
-    printf("Tempo: %.6f s\n\n", time);
+    printf("Tempo: %.6f s\n", time_s);
+    if (tours > 0) {
+        double tps = time_s > 0 ? (double)tours / time_s : 0.0;
+        printf("Tours: %llu (%.3e tours/s)\n", tours, tps);
+    }
+    printf("\n");
 }
 
 int main(int argc, char *argv[]) {
@@ -110,20 +146,18 @@ int main(int argc, char *argv[]) {
 
     read_tsp(argv[1]);
 
-    int vis[MAX] = {0}, path[MAX] = {0};
-    path[0] = 0;
-    vis[0] = 1;
-
+    /* Sequencial */
     double t1 = omp_get_wtime();
-    tsp_seq(1, 0, path, vis);
+    tsp_seq_run();
     double t2 = omp_get_wtime();
 
+    /* Paralelo (OpenMP) */
     double t3 = omp_get_wtime();
-    tsp_omp();
+    tsp_omp_run();
     double t4 = omp_get_wtime();
 
-    print_result("Sequencial", best_seq, best_cost_seq, t2 - t1);
-    print_result("OpenMP", best_omp, best_cost_omp, t4 - t3);
+    print_result("Sequencial", best_seq, best_cost_seq, t2 - t1, seq_leaves);
+    print_result("OpenMP",    best_omp, best_cost_omp, t4 - t3, omp_leaves);
 
     double tempo_seq = t2 - t1;
     double tempo_omp = t4 - t3;
@@ -132,6 +166,11 @@ int main(int argc, char *argv[]) {
 
     printf("Speedup: %.2fx\n", speedup);
     printf("Eficiencia: %.2f%%\n", eficiencia);
+
+    /* Folhas esperadas: (N-1)! */
+    unsigned long long expected = 1ULL;
+    for (int k = 2; k <= N-1; ++k) expected *= (unsigned long long)k;
+    printf("Folhas esperadas: %llu\n", expected);
 
     return 0;
 }

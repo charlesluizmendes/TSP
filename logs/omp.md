@@ -1,29 +1,89 @@
 # Abordagem de Força Bruta:
 
-## ulysses16.tsp
+## berlin13.tsp
 
 ### 2 Threads:
 
 ```
+> $env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\berlin13.tsp
+Sequencial:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 14.590000 s
+Tours: 479001600 (3.283e+07 tours/s)
 
+OpenMP:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 7.552000 s
+Tours: 479001600 (6.343e+07 tours/s)
+
+Speedup: 1.93x
+Eficiencia: 96.60%
+Folhas esperadas: 479001600
 ```
 
 ### 4 Threads:
 
 ```
+> $env:OMP_NUM_THREADS=4; .\bin\tsp_omp.exe .\data\berlin13.tsp
+Sequencial:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 15.345000 s
+Tours: 479001600 (3.122e+07 tours/s)
 
+OpenMP:
+1 5 6 4 12 13 11 10 9 8 3 7 2 1
+Custo: 4564
+Tempo: 5.114000 s
+Tours: 479001600 (9.366e+07 tours/s)
+
+Speedup: 3.00x
+Eficiencia: 75.01%
+Folhas esperadas: 479001600
 ```
 
 ### 8 Threads:
 
 ```
+> $env:OMP_NUM_THREADS=8; .\bin\tsp_omp.exe .\data\berlin13.tsp
+Sequencial:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 14.976000 s
+Tours: 479001600 (3.198e+07 tours/s)
 
+OpenMP:
+1 5 6 4 12 13 11 10 9 8 3 7 2 1
+Custo: 4564
+Tempo: 3.962000 s
+Tours: 479001600 (1.209e+08 tours/s)
+
+Speedup: 3.78x
+Eficiencia: 47.25%
+Folhas esperadas: 479001600
 ```
 
 ### 16 Threads:
 
 ```
+> $env:OMP_NUM_THREADS=13; .\bin\tsp_omp.exe .\data\berlin13.tsp
+Sequencial:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 14.835000 s
+Tours: 479001600 (3.229e+07 tours/s)
 
+OpenMP:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 2.286000 s
+Tours: 479001600 (2.095e+08 tours/s)
+
+Speedup: 6.49x
+Eficiencia: 49.92%
+Folhas esperadas: 479001600
 ```
 
 # Algoritmo de Nearest Neighbor:

@@ -1,41 +1,89 @@
 # Abordagem de Força Bruta:
 
-## ulysses16.tsp
+## berlin13.tsp
 
 ### 2 Processos:
 
 ```
+> mpiexec -np 2 .\bin\tsp_mpi.exe .\data\berlin13.tsp
+Sequencial:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 12.031000 s
+Tours: 479001600 (3.981e+07 tours/s)
 
+MPI:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 6.157554 s
+Tours: 479001600 (7.779e+07 tours/s)
+
+Speedup: 1.95x
+Eficiencia: 97.69%
+Folhas esperadas: 479001600
 ```
 
 ### 4 Processos:
 
 ```
+> mpiexec -np 4 .\bin\tsp_mpi.exe .\data\berlin13.tsp
+Sequencial:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 12.054582 s
+Tours: 479001600 (3.974e+07 tours/s)
 
+MPI:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 3.531593 s
+Tours: 479001600 (1.356e+08 tours/s)
+
+Speedup: 3.41x
+Eficiencia: 85.33%
+Folhas esperadas: 479001600
 ```
 
 ### 8 Processos:
 
 ```
+> mpiexec -np 8 .\bin\tsp_mpi.exe .\data\berlin13.tsp
+Sequencial:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 12.070892 s
+Tours: 479001600 (3.968e+07 tours/s)
 
+MPI:
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 2.373895 s
+Tours: 479001600 (2.018e+08 tours/s)
+
+Speedup: 5.08x
+Eficiencia: 63.56%
+Folhas esperadas: 479001600
 ```
 
 ### 16 Processos:
 
 ```
-> mpiexec -np 16 .\bin\tsp_mpi.exe .\data\ulysses16.tsp
+> mpiexec -np 13 .\bin\tsp_mpi.exe .\data\berlin13.tsp
 Sequencial:
-1 3 2 4 8 14 7 6 15 5 11 9 10 12 13 16 1
-Custo: 71
-Tempo: 36930.277097 s (10h e 15 min e 30s)
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 12.061112 s
+Tours: 479001600 (3.971e+07 tours/s)
 
 MPI:
-1 3 2 4 8 14 7 6 15 5 11 9 10 12 13 16 1
-Custo: 71
-Tempo: 2351.097308 s (39m e 11s)
+1 2 7 3 8 9 10 11 13 12 4 6 5 1
+Custo: 4564
+Tempo: 1.651509 s
+Tours: 479001600 (2.900e+08 tours/s)
 
-Speedup: 15.71x
-Eficiencia: 98.17%
+Speedup: 7.30x
+Eficiencia: 56.18%
+Folhas esperadas: 479001600
 ```
 
 ## Algoritmo de Nearest Neighbor:
