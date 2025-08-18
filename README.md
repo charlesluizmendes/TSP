@@ -16,14 +16,30 @@ Para compilar o programa, basta executar os seguintes comandos abaixo:
 
 ### MPI
 
+Abordagem de Força Bruta:
+
 ```bash
-& "C:\msys64\ucrt64\bin\gcc.exe" -O3 -I"$Env:MSMPI_INC" ".\src\tsp_mpi.c" -L"$Env:MSMPI_LIB64" -lmsmpi -lAdvapi32 -o ".\bin\tsp_mpi.exe"
+& "C:\msys64\ucrt64\bin\gcc.exe" -O3 -I"$Env:MSMPI_INC" ".\src\brute_force\tsp_mpi.c" -L"$Env:MSMPI_LIB64" -lmsmpi -lAdvapi32 -o ".\bin\tsp_mpi.exe"
+```
+
+Algoritmo de Nearest Neighbor:
+
+```bash
+& "C:\msys64\ucrt64\bin\gcc.exe" -O3 -I"$Env:MSMPI_INC" ".\src\nearest_neighbor\tsp_mpi.c" -L"$Env:MSMPI_LIB64" -lmsmpi -lAdvapi32 -o ".\bin\tsp_mpi.exe"
 ```
 
 ### OpenMP
 
+Abordagem de Força Bruta:
+
 ```bash
-& "C:\msys64\ucrt64\bin\gcc.exe" -O3 -fopenmp -lm ".\src\tsp_omp.c" -o ".\bin\tsp_omp.exe"
+& "C:\msys64\ucrt64\bin\gcc.exe" -O3 -fopenmp -lm ".\src\brute_force\tsp_omp.c" -o ".\bin\tsp_omp.exe"
+```
+
+Algoritmo de Nearest Neighbor:
+
+```bash
+& "C:\msys64\ucrt64\bin\gcc.exe" -O3 -fopenmp -lm ".\src\nearest_neighbor\tsp_omp.c" -o ".\bin\tsp_omp.exe"
 ```
 
 ## Execução
@@ -33,19 +49,19 @@ Para executar o programa e visualizar os resultados basta executar os comandos a
 ### MPI
 
 ```bash
-mpiexec -np 2 .\bin\tsp_mpi.exe .\data\berlin13.tsp
+mpiexec -np 2 .\bin\tsp_mpi.exe .\data\ulysses16.tsp
 ```
 
-- `mpiexec -np 2`: Executa o programa com **8 processos MPI**.
+- `mpiexec -np 2`: Executa o programa com **2 processos paralelos**.
 - `.\bin\tsp_mpi.exe`: Caminho para o executável compilado com suporte a **MPI**.
-- `.\data\berlin13.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
+- `.\data\ulysses16.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
 
 ### OpenM
 
 ```bash
-$env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\berlin13.tsp
+$env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\ulysses16.tsp
 ```
 
-- `$env:OMP_NUM_THREADS=2`: Define o uso de **8 threads paralelas** (para PowerShell).
+- `$env:OMP_NUM_THREADS=2`: Define o uso de **2 threads paralelas**.
 - `.\bin\tsp_omp.exe`: Caminho para o executável compilado com suporte a **OpenMP**.
-- `.\data\berlin13.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
+- `.\data\ulysses16.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
