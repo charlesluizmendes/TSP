@@ -88,7 +88,7 @@ Folhas esperadas: 479001600
 
 # Algoritmo de Nearest Neighbor:
 
-## rd100.tsp
+## d657.tsp
 
 ### 2 Threads:
 
