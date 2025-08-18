@@ -21,7 +21,7 @@ unsigned long long omp_leaves = 0ULL;
 
 static inline int dist(City a, City b) {
     double dx = a.x - b.x, dy = a.y - b.y;
-    return (int)llround(sqrt(dx*dx + dy*dy)); // EUC_2D
+    return (int)llround(sqrt(dx*dx + dy*dy));
 }
 
 void read_tsp(const char *filename) {
@@ -146,12 +146,10 @@ int main(int argc, char *argv[]) {
 
     read_tsp(argv[1]);
 
-    /* Sequencial */
     double t1 = omp_get_wtime();
     tsp_seq_run();
     double t2 = omp_get_wtime();
 
-    /* Paralelo (OpenMP) */
     double t3 = omp_get_wtime();
     tsp_omp_run();
     double t4 = omp_get_wtime();
@@ -167,7 +165,6 @@ int main(int argc, char *argv[]) {
     printf("Speedup: %.2fx\n", speedup);
     printf("Eficiencia: %.2f%%\n", eficiencia);
 
-    /* Folhas esperadas: (N-1)! */
     unsigned long long expected = 1ULL;
     for (int k = 2; k <= N-1; ++k) expected *= (unsigned long long)k;
     printf("Folhas esperadas: %llu\n", expected);

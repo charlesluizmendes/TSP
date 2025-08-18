@@ -79,13 +79,12 @@ int main(int argc, char *argv[]) {
     MPI_Bcast(cities, sizeof(City) * N, MPI_BYTE, 0, MPI_COMM_WORLD);
 
     double t1, t2, t3, t4;
-    double seq_time = 0.0;  // Corrigido: inicializar variável
+    double seq_time = 0.0;  
 
-    // Cálculo sequencial - TODOS os processos fazem para medição consistente
-    MPI_Barrier(MPI_COMM_WORLD);  // Sincronizar antes da medição
+    MPI_Barrier(MPI_COMM_WORLD);
     t1 = MPI_Wtime();
     
-    if (rank == 0) {  // Só rank 0 executa para evitar trabalho desnecessário
+    if (rank == 0) { 
         for (int i = 0; i < N; i++) {
             int path[MAX];
             double cost = nearest_neighbor(i, path);
@@ -96,18 +95,16 @@ int main(int argc, char *argv[]) {
         }
     }
     
-    MPI_Barrier(MPI_COMM_WORLD);  // Sincronizar após execução sequencial
+    MPI_Barrier(MPI_COMM_WORLD);
     t2 = MPI_Wtime();
     seq_time = t2 - t1;
 
-    // Cálculo paralelo
     MPI_Barrier(MPI_COMM_WORLD);
     t3 = MPI_Wtime();
     
     int local_best_path[MAX];
     double local_best = 1e9;
 
-    // Distribuir trabalho balanceadamente
     for (int i = rank; i < N; i += size) {
         int path[MAX];
         double cost = nearest_neighbor(i, path);
