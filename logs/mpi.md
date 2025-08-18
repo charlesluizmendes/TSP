@@ -65,7 +65,7 @@ Eficiencia: 63.56%
 Folhas esperadas: 479001600
 ```
 
-### 16 Processos:
+### 13 Processos:
 
 ```
 > mpiexec -np 13 .\bin\tsp_mpi.exe .\data\berlin13.tsp

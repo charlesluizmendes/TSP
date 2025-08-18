@@ -65,7 +65,7 @@ Eficiencia: 47.25%
 Folhas esperadas: 479001600
 ```
 
-### 16 Threads:
+### 13 Threads:
 
 ```
 > $env:OMP_NUM_THREADS=13; .\bin\tsp_omp.exe .\data\berlin13.tsp
