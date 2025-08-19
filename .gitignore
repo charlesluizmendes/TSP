@@ -9,7 +9,6 @@ venv/
 *.log
 *.env
 *.exe
-*.tsp
 .DS_Store
 
 # VSCode
