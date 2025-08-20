@@ -139,6 +139,8 @@ static void print_result(const char *label, int *path, double cost,
 }
 
 int main(int argc, char *argv[]) {
+    printf("Número de threads OpenMP: %d\n\n", omp_get_max_threads());
+
     if (argc < 2) {
         printf("Uso: %s arquivo.tsp\n", argv[0]);
         return 1;
