@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -l select=1:ncpus=48:mpiprocs=16
+#PBS -l walltime=01:00:00
+#PBS -j oe
+#PBS -V
+#PBS -N tsp_mpi
+
+# load modules
+module load gcc/11.4.0
+module load openmpi-gnu/4.0.1
+
+# change directory
+cd ${PBS_O_WORKDIR}
+
+# run
+mpirun ./bin/tsp_mpi ./data/berlin13.tsp
