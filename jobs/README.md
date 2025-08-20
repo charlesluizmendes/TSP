@@ -1,5 +1,10 @@
 # Execução em HPC
 
+## Criar pasta "bin"
+```
+mkdir bin
+```
+
 ## Compila MPI
 ```
 module purge
@@ -17,8 +22,8 @@ gcc -O3 -fopenmp -o bin/tsp_omp src/brute_force/tsp_omp.c -lm
 
 ## Submete os jobs
 ```
-qsub jobs/tsp_mpi.job
-qsub jobs/tsp_omp.job
+qsub jobs/tsp_mpi_2.job
+qsub jobs/tsp_omp_2.job
 ```
 
 ## Verifica status dos jobs
