@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -l select=1:ncpus=48:ompthreads=2
-#PBS -l walltime=01:00:00
+#PBS -l walltime=48:00:00
 #PBS -j oe
 #PBS -V
 #PBS -N tsp_omp
@@ -12,4 +12,4 @@ module load gcc/11.4.0
 cd ${PBS_O_WORKDIR}
 
 # run
-./bin/tsp_omp ./data/berlin13.tsp
+./bin/tsp_omp ./data/berlin16.tsp
