@@ -25,6 +25,18 @@ gcc -O3 -fopenmp -o bin/tsp_omp src/brute_force/tsp_omp.c -lm
 qsub jobs/tsp_mpi_2.job
 qsub jobs/tsp_omp_2.job
 ```
+```
+qsub jobs/tsp_mpi_4.job
+qsub jobs/tsp_omp_4.job
+```
+```
+qsub jobs/tsp_mpi_8.job
+qsub jobs/tsp_omp_8.job
+```
+```
+qsub jobs/tsp_mpi_16.job
+qsub jobs/tsp_omp_16.job
+```
 
 ## Verifica status dos jobs
 ```
