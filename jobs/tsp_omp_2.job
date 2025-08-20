@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -l select=1:ncpus=48:ompthreads=2
-#PBS -l walltime=00:01:00
+#PBS -l walltime=01:00:00
 #PBS -j oe
 #PBS -V
 #PBS -N tsp_omp
