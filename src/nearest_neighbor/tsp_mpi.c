@@ -10,8 +10,8 @@ typedef struct { int id; double x, y; } City;
 
 City cities[MAX];
 int N;
-int best_path[MAX], best_path_par[MAX];
-double best_cost = 1e9, best_cost_par = 1e9;
+int best_path_par[MAX];
+double best_cost_par = 1e9;
 
 double dist(City a, City b) {
     return round(sqrt((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y)));
@@ -62,11 +62,6 @@ void print_result(const char *label, int *path, double cost, double time) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        printf("Uso: %s arquivo.tsp\n", argv[0]);
-        return 1;
-    }
-
     MPI_Init(&argc, &argv);
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -78,29 +73,10 @@ int main(int argc, char *argv[]) {
     MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(cities, sizeof(City) * N, MPI_BYTE, 0, MPI_COMM_WORLD);
 
-    double t1, t2, t3, t4;
-    double seq_time = 0.0;  
+    double t1, t2;
 
     MPI_Barrier(MPI_COMM_WORLD);
     t1 = MPI_Wtime();
-    
-    if (rank == 0) { 
-        for (int i = 0; i < N; i++) {
-            int path[MAX];
-            double cost = nearest_neighbor(i, path);
-            if (cost < best_cost) {
-                best_cost = cost;
-                memcpy(best_path, path, sizeof(int) * N);
-            }
-        }
-    }
-    
-    MPI_Barrier(MPI_COMM_WORLD);
-    t2 = MPI_Wtime();
-    seq_time = t2 - t1;
-
-    MPI_Barrier(MPI_COMM_WORLD);
-    t3 = MPI_Wtime();
     
     int local_best_path[MAX];
     double local_best = 1e9;
@@ -127,17 +103,11 @@ int main(int argc, char *argv[]) {
     best_cost_par = global.cost;
     
     MPI_Barrier(MPI_COMM_WORLD);
-    t4 = MPI_Wtime();
+    t2 = MPI_Wtime();
 
     if (rank == 0) {
-        double par_time = t4 - t3;
-        print_result("Sequencial", best_path, best_cost, seq_time);
+        double par_time = t2 - t1;
         print_result("MPI", best_path_par, best_cost_par, par_time);
-
-        double speedup = seq_time / par_time;
-        double eff = 100.0 * speedup / size;
-        printf("Speedup: %.2fx\n", speedup);
-        printf("Eficiencia: %.2f%%\n", eff);       
     }
 
     MPI_Finalize();

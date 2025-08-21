@@ -63,7 +63,6 @@ void print_result(const char *label, int *path, double cost,
         double tps = time > 0 ? (double)tours / time : 0.0;
         printf("Tours: %llu (%.3e tours/s)\n", tours, tps);
     }
-       
     printf("\n");
 }
 
@@ -75,36 +74,20 @@ int main(int argc, char *argv[]) {
 
     if (rank == 0) {
         printf("Número de processos MPI: %d\n\n", size);
-    }
-
-    if (argc < 2) {
-        if (rank == 0) printf("Uso: %s arquivo.tsp\n", argv[0]);
-        MPI_Finalize(); return 1;
-    }
+    }   
 
     if (rank == 0) read_tsp(argv[1]);
     MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(cities, sizeof(City)*MAX, MPI_BYTE, 0, MPI_COMM_WORLD);
-
-    double best_cost_seq = 1e9, best_cost_par = 1e9;
-    int best_seq[MAX], best_par[MAX];
-    double t1, t2, t3, t4;
-    unsigned long long seq_leaves = 0ULL;
+    
+    double t1, t2;
     unsigned long long local_leaves = 0ULL, global_leaves = 0ULL;
-
-    if (rank == 0) {
-        int path[MAX] = {0}, vis[MAX] = {0};
-        vis[0] = 1;
-        t1 = MPI_Wtime();
-        tsp(1, 0, path, vis, &best_cost_seq, best_seq, &seq_leaves);
-        t2 = MPI_Wtime();
-    }
 
     double local_best = 1e9;
     int local_path[MAX];
     int path[MAX], vis[MAX];
     MPI_Barrier(MPI_COMM_WORLD);
-    t3 = MPI_Wtime();
+    t1 = MPI_Wtime();
 
     for (int i = 1 + rank; i < N; i += size) {
         memset(vis, 0, sizeof(vis));
@@ -112,7 +95,7 @@ int main(int argc, char *argv[]) {
         vis[0] = vis[i] = 1;
         tsp(2, dist(cities[0], cities[i]), path, vis,
             &local_best, local_path, &local_leaves);
-   }
+    }
 
     struct { double cost; int rank; } local_min = {local_best, rank};
     struct { double cost; int rank; } global_min;
@@ -122,17 +105,10 @@ int main(int argc, char *argv[]) {
     MPI_Reduce(&local_leaves, &global_leaves, 1, MPI_UNSIGNED_LONG_LONG, MPI_SUM, 0, MPI_COMM_WORLD);
 
     MPI_Barrier(MPI_COMM_WORLD);
-    t4 = MPI_Wtime();
+    t2 = MPI_Wtime();
 
     if (rank == 0) {
-        print_result("Sequencial", best_seq, best_cost_seq, t2 - t1, seq_leaves);
-        print_result("MPI", local_path, global_min.cost, t4 - t3, global_leaves);
-        double tempo_seq = t2 - t1;
-        double tempo_par = t4 - t3;
-        double speedup = tempo_seq / tempo_par;
-        double eficiencia = (speedup / size) * 100.0;
-        printf("Speedup: %.2fx\n", speedup);
-        printf("Eficiencia: %.2f%%\n", eficiencia);
+        print_result("MPI", local_path, global_min.cost, t2 - t1, global_leaves);
 
         unsigned long long expected = 1ULL;
         for (int k = 2; k <= N-1; ++k) expected *= k;

@@ -10,8 +10,8 @@ typedef struct { int id; double x, y; } City;
 
 City cities[MAX];
 int N;
-int best_path[MAX], best_path_par[MAX];
-double best_cost = 1e9, best_cost_par = 1e9;
+int best_path_par[MAX];
+double best_cost_par = 1e9;
 
 double dist(City a, City b) {
     return round(sqrt((a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y)));
@@ -62,25 +62,9 @@ void print_result(const char *label, int *path, double cost, double time) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        printf("Uso: %s arquivo.tsp\n", argv[0]);
-        return 1;
-    }
-
     read_tsp(argv[1]);
 
     double t1 = omp_get_wtime();
-    for (int i = 0; i < N; i++) {
-        int path[MAX];
-        double cost = nearest_neighbor(i, path);
-        if (cost < best_cost) {
-            best_cost = cost;
-            memcpy(best_path, path, sizeof(int) * N);
-        }
-    }
-    double t2 = omp_get_wtime();
-
-    double t3 = omp_get_wtime();
     #pragma omp parallel
     {
         int local_path[MAX];
@@ -104,16 +88,9 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    double t4 = omp_get_wtime();
+    double t2 = omp_get_wtime();
     
-
-    print_result("Sequencial", best_path, best_cost, t2 - t1);
-    print_result("OpenMP", best_path_par, best_cost_par, t4 - t3);
-
-    double speedup = (t2 - t1) / (t4 - t3);
-    double eff = 100.0 * speedup / omp_get_max_threads();
-    printf("Speedup: %.2fx\n", speedup);
-    printf("Eficiencia: %.2f%%\n", eff);
+    print_result("OpenMP", best_path_par, best_cost_par, t2 - t1);
 
     return 0;
 }
