@@ -105,7 +105,7 @@ static void print_result(const char *label, int *path, double cost,
 }
 
 int main(int argc, char *argv[]) {
-    printf("Número de threads OpenMP: %d\n\n", omp_get_max_threads());
+    printf("Numero de threads OpenMP: %d\n\n", omp_get_max_threads());
 
     read_tsp(argv[1]);
 

@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
     if (rank == 0) {
-        printf("Número de processos MPI: %d\n\n", size);
+        printf("Numero de processos MPI: %d\n\n", size);
     }   
 
     if (rank == 0) read_tsp(argv[1]);

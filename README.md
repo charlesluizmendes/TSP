@@ -48,6 +48,8 @@ Algoritmo de Nearest Neighbor:
 
 ### Métricas
 
+(Windows)
+
 ```bash
 & "C:\msys64\ucrt64\bin\gcc.exe" -O2 -fopenmp -lm ".\src\metrics.c" -o ".\bin\metrics.exe"
 ```
@@ -59,19 +61,19 @@ Para executar o programa e visualizar os resultados basta executar os comandos a
 ### MPI
 
 ```bash
-mpiexec -np 2 .\bin\tsp_mpi.exe .\data\ulysses16.tsp
+mpiexec -np 2 .\bin\tsp_mpi.exe .\data\berlin13.tsp
 ```
 
 - `mpiexec -np 2`: Executa o programa com **2 processos paralelos**.
 - `.\bin\tsp_mpi.exe`: Caminho para o executável compilado com suporte a **MPI**.
-- `.\data\ulysses16.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
+- `.\data\berlin13.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
 
 ### OpenM
 
 ```bash
-$env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\ulysses16.tsp
+$env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\berlin13.tsp
 ```
 
 - `$env:OMP_NUM_THREADS=2`: Define o uso de **2 threads paralelas**.
 - `.\bin\tsp_omp.exe`: Caminho para o executável compilado com suporte a **OpenMP**.
-- `.\data\ulysses16.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
+- `.\data\berlin13.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.

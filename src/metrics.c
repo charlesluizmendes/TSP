@@ -6,7 +6,7 @@ int main(void) {
     double C_seq, C_par;
     int P;
 
-    printf("=== Calculadora de Métricas de Desempenho ===\n\n");
+    printf("=== Metricas de Desempenho ===\n\n");
 
     printf("Numero de processadores/threads (P): ");
     if (scanf("%d", &P) != 1 || P <= 0) {
