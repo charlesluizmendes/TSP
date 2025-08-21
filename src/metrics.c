@@ -42,8 +42,8 @@ int main(void) {
     double S = T_seq / T_par;                    // Speedup
     double E = (S / (double)P) * 100.0;          // Eficiência em %
     double cost_par_time = (double)P * T_par;    // Custo em tempo do paralelo
-    double overhead_abs = cost_par_time - T_seq; // 
-    double overhead_rel = overhead_abs / T_seq;  // 
+    double overhead_abs = cost_par_time - T_seq; // Overhead Absoluto
+    double overhead_rel = overhead_abs / T_seq;  // Overhead Relativo
 
     // Karp–Flatt epsilon (fração serial efetiva)
     double epsilon = -1.0;
@@ -59,7 +59,7 @@ int main(void) {
     printf("T_seq (s)         : %.6f\n", T_seq);
     printf("T_par (s)         : %.6f\n", T_par);
     printf("Speedup (S)       : %.6f\n", S);
-    printf("Eficiencia (%%)    : %.2f%%\n", E);
+    printf("Eficiencia (%%)   : %.2f%%\n", E);
     printf("Custo paralelo    : %.6f ( = P * T_par )\n", cost_par_time);
     printf("Overhead abs (s)  : %.6f ( = P*T_par - T_seq )\n", overhead_abs);
     printf("Overhead rel      : %.6f (fracao de T_seq)\n", overhead_rel);
@@ -83,11 +83,6 @@ int main(void) {
     } else {
         printf("\n(Qualidade nao avaliada: informe C_seq e C_par >= 0 para comparar)\n");
     }
-
-    printf("\nObservacoes:\n");
-    printf("- Speedup ideal ~ P; Eficiencia ideal ~ 100%%.\n");
-    printf("- Overhead mede custo extra do paralelismo (comunicacao, sincronizacao, carga desigual).\n");
-    printf("- Karp–Flatt aproxima a fracao serial efetiva; menor é melhor.\n");
 
     return 0;
 }
