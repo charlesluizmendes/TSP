@@ -60,6 +60,8 @@ Para executar o programa e visualizar os resultados basta executar os comandos a
 
 ### MPI
 
+(Windows)
+
 ```bash
 mpiexec -np 2 .\bin\tsp_mpi.exe .\data\berlin13.tsp
 ```
@@ -70,6 +72,8 @@ mpiexec -np 2 .\bin\tsp_mpi.exe .\data\berlin13.tsp
 
 ### OpenM
 
+(Windows)
+
 ```bash
 $env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\berlin13.tsp
 ```
@@ -77,3 +81,11 @@ $env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\berlin13.tsp
 - `$env:OMP_NUM_THREADS=2`: Define o uso de **2 threads paralelas**.
 - `.\bin\tsp_omp.exe`: Caminho para o executável compilado com suporte a **OpenMP**.
 - `.\data\berlin13.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
+
+### Métricas
+
+(Windows)
+
+```bash
+.\bin\metrics.exe
+```

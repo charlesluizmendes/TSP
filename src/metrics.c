@@ -55,31 +55,33 @@ int main(void) {
     int cost_optimal = fabs(cost_par_time - T_seq) <= 0.10 * T_seq;
 
     printf("\n=== Resultados ===\n");
-    printf("P                 : %d\n", P);
-    printf("T_seq (s)         : %.6f\n", T_seq);
-    printf("T_par (s)         : %.6f\n", T_par);
-    printf("Speedup (S)       : %.6f\n", S);
-    printf("Eficiencia (%%)   : %.2f%%\n", E);
-    printf("Custo paralelo    : %.6f ( = P * T_par )\n", cost_par_time);
-    printf("Overhead abs (s)  : %.6f ( = P*T_par - T_seq )\n", overhead_abs);
-    printf("Overhead rel      : %.6f (fracao de T_seq)\n", overhead_rel);
+    printf("%-25s: %d\n",  "P", P);
+    printf("%-25s: %.6f\n", "T_seq (s)", T_seq);
+    printf("%-25s: %.6f\n", "T_par (s)", T_par);
+    printf("%-25s: %.6f\n", "Speedup (S)", S);
+    printf("%-25s: %.2f%%\n", "Eficiencia (%)", E);
+    printf("%-25s: %.6f ( = P * T_par )\n", "Custo paralelo", cost_par_time);
+    printf("%-25s: %.6f ( = P*T_par - T_seq )\n", "Overhead abs (s)", overhead_abs);
+    printf("%-25s: %.6f (fracao de T_seq)\n", "Overhead rel", overhead_rel);
+    printf("%-25s: %.6f\n", "Karp-Flatt epsilon", epsilon);
+    printf("%-25s: %s (tolerancia 10%%)\n", "Custo-otimal?", cost_optimal ? "SIM" : "NAO");
 
     if (epsilon >= 0.0 && isfinite(epsilon)) {
-        printf("Karp–Flatt epsilon: %.6f\n", epsilon);
+        printf("%-25s: %.6f\n", "Karp-Flatt epsilon", epsilon);
     } else {
-        printf("Karp–Flatt epsilon: N/A (P <= 1)\n");
+        printf("%-25s: N/A (P <= 1)\n", "Karp-Flatt epsilon");
     }
 
-    printf("Custo-otimal?     : %s (tolerancia 10%%)\n", cost_optimal ? "SIM" : "NAO");
+    printf("%-25s: %s (tolerancia 10%%)\n", "Custo-otimal?", cost_optimal ? "SIM" : "NAO");
 
     // Comparacao de qualidade/custo de solucao, se informado
     if (C_seq >= 0.0 && C_par >= 0.0) {
         double delta = C_par - C_seq;
         double pct  = (C_seq != 0.0) ? (delta / C_seq) * 100.0 : 0.0;
-        printf("\n--- Qualidade da Solucao ---\n");
-        printf("C_seq             : %.6f\n", C_seq);
-        printf("C_par             : %.6f\n", C_par);
-        printf("Delta (par - seq) : %.6f ( %+ .2f%% )\n", delta, pct);
+        printf("\n=== Qualidade da Solucao ===n");
+        printf("%-25s: %.6f\n", "C_seq", C_seq);
+        printf("%-25s: %.6f\n", "C_par", C_par);
+        printf("%-25s: %.6f (%+.2f%%)\n", "Delta (par - seq)", delta, pct);
     } else {
         printf("\n(Qualidade nao avaliada: informe C_seq e C_par >= 0 para comparar)\n");
     }
