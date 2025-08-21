@@ -46,6 +46,12 @@ Algoritmo de Nearest Neighbor:
 & "C:\msys64\ucrt64\bin\gcc.exe" -O3 -fopenmp -lm ".\src\nearest_neighbor\tsp_omp.c" -o ".\bin\tsp_omp.exe"
 ```
 
+### Métricas
+
+```bash
+gcc -O2 -o metricas metricas.c -lm
+```
+
 ## Execução
 
 Para executar o programa e visualizar os resultados basta executar os comandos abaixo:
