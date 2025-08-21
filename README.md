@@ -49,7 +49,7 @@ Algoritmo de Nearest Neighbor:
 ### Métricas
 
 ```bash
-gcc -O2 -o metricas metricas.c -lm
+& "C:\msys64\ucrt64\bin\gcc.exe" -O2 -fopenmp -lm ".\src\metrics.c" -o ".\bin\metrics.exe"
 ```
 
 ## Execução
