@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
         }
 
         printf("===== RESULTADO =====\n");
-        printf("Processo vencedor: %d\n", winner_rank);
+        printf("Processo: %d\n", winner_rank);
         
         for (int i = 0; i < N; i++) printf("%d ", cities[global_best_path[i]].id);
         printf("%d\n", cities[global_best_path[0]].id);

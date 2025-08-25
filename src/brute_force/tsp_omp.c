@@ -151,8 +151,8 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("===== RESULTADO FINAL =====\n");
-    printf("Thread vencedora: %d\n", winner_thread);
+    printf("===== RESULTADO =====\n");
+    printf("Thread: %d\n", winner_thread);
     
     for (int i = 0; i < N; i++) printf("%d ", cities[all_threads[winner_thread].path[i]].id);
     printf("%d\n", cities[all_threads[winner_thread].path[0]].id);
