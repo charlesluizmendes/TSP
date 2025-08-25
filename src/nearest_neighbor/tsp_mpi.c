@@ -177,7 +177,6 @@ int main(int argc, char *argv[]) {
                 winner_cost = all_info[i].cost;
                 winner_time = all_info[i].individual_time;
             }
-            // Encontrar o tempo máximo individual (processo mais lento)
             if (all_info[i].individual_time > max_individual_time) {
                 max_individual_time = all_info[i].individual_time;
             }
