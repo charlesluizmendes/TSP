@@ -22,6 +22,10 @@ gcc -O3 -fopenmp -o bin/tsp_omp src/brute_force/tsp_omp.c -lm
 
 ## Submete os jobs
 ```
+qsub jobs/tsp_mpi_1.job
+qsub jobs/tsp_omp_1.job
+```
+```
 qsub jobs/tsp_mpi_2.job
 qsub jobs/tsp_omp_2.job
 ```
