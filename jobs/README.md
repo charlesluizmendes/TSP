@@ -47,9 +47,19 @@ qsub jobs/tsp_omp_16.job
 qstat -u $USER
 ```
 
-## Vê os resultados (arquivos .o<jobid> serão criados)
+## Observar os resultados (arquivos .o<jobid> serão criados)
 ```
 ls -la *.o*
 cat tsp_mpi.o<jobid>
 cat tsp_omp.o<jobid>
+```
+
+## Copiar os resultados (de dentro do HPC para enviar ao Github)
+```
+cp -v tsp_mpi.o[0-9]* ./logs/brute_force/
+cp -v tsp_omp.o[0-9]* ./logs/brute_force/
+```
+```
+cp -v tsp_mpi.o[0-9]* ./logs/nearest_neighbor/
+cp -v tsp_omp.o[0-9]* ./logs/nearest_neighbor/
 ```
