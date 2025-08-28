@@ -1,0 +1,83 @@
+Numero de processos MPI: 16
+
+Processo 0:
+1 2 7 3 8 9 10 15 5 6 4 12 11 13 14 16 1
+Custo: 4990
+Tempo: 7003.951375 s
+
+Processo 1:
+1 3 8 9 10 15 5 6 4 12 11 13 14 16 2 7 1
+Custo: 5099
+Tempo: 6991.877503 s
+
+Processo 2:
+1 4 15 5 6 12 11 13 14 16 2 7 3 8 9 10 1
+Custo: 5340
+Tempo: 6976.749093 s
+
+Processo 3:
+1 5 15 6 4 12 11 13 14 16 2 7 3 8 9 10 1
+Custo: 5155
+Tempo: 6969.558202 s
+
+Processo 4:
+1 6 5 15 4 12 11 13 14 16 2 7 3 8 9 10 1
+Custo: 5215
+Tempo: 7005.676421 s
+
+Processo 5:
+1 7 2 3 8 9 10 15 5 6 4 12 11 13 14 16 1
+Custo: 5003
+Tempo: 6992.148311 s
+
+Processo 6:
+1 8 9 10 15 5 6 4 12 11 13 14 16 2 7 3 1
+Custo: 5188
+Tempo: 6993.527437 s
+
+Processo 7:
+1 9 10 8 3 7 2 16 14 13 11 12 4 6 15 5 1
+Custo: 5191
+Tempo: 7027.246803 s
+
+Processo 8:
+1 10 9 8 3 7 2 16 14 13 11 12 4 6 15 5 1
+Custo: 5155
+Tempo: 7014.679020 s
+
+Processo 9:
+1 11 14 13 12 4 6 5 15 10 9 8 3 7 2 16 1
+Custo: 5447
+Tempo: 7036.155539 s
+
+Processo 10:
+1 12 11 14 13 4 6 5 15 10 9 8 3 7 2 16 1
+Custo: 5413
+Tempo: 7028.203171 s
+
+Processo 11:
+1 13 14 11 12 4 6 5 15 10 9 8 3 7 2 16 1
+Custo: 5316
+Tempo: 7054.391755 s
+
+Processo 12:
+1 14 13 11 12 4 6 5 15 10 9 8 3 7 2 16 1
+Custo: 5285
+Tempo: 7025.747650 s
+
+Processo 13:
+1 15 5 6 4 12 11 13 14 16 2 7 3 8 9 10 1
+Custo: 5158
+Tempo: 7000.967365 s
+
+Processo 14:
+1 16 14 13 11 12 4 6 5 15 10 9 8 3 7 2 1
+Custo: 4990
+Tempo: 7044.068017 s
+
+===== RESULTADO =====
+Processo: 0
+1 2 7 3 8 9 10 15 5 6 4 12 11 13 14 16 1
+Custo: 4990
+Tempo: 7003.951375 s
+Tempo total da execucao paralela: 7054.391846 s

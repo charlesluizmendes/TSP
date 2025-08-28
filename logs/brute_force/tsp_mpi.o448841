@@ -1,0 +1,13 @@
+Numero de processos MPI: 1
+
+Processo 0:
+1 2 7 3 8 9 10 15 5 6 4 12 11 13 14 16 1
+Custo: 4990
+Tempo: 105160.808944 s
+
+===== RESULTADO =====
+Processo: 0
+1 2 7 3 8 9 10 15 5 6 4 12 11 13 14 16 1
+Custo: 4990
+Tempo: 105160.808944 s
+Tempo total da execucao paralela: 105160.808960 s

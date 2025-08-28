@@ -1,0 +1,28 @@
+Numero de threads OpenMP: 4
+
+Thread 0:
+1 2 7 3 8 9 10 15 5 6 4 12 11 13 14 16 1
+Custo: 4990
+Tempo: 28427.126323 s
+
+Thread 1:
+1 7 2 3 8 9 10 15 5 6 4 12 11 13 14 16 1
+Custo: 5003
+Tempo: 28427.126324 s
+
+Thread 2:
+1 10 9 8 3 7 2 16 14 13 11 12 4 6 15 5 1
+Custo: 5155
+Tempo: 28427.126326 s
+
+Thread 3:
+1 16 14 13 11 12 4 6 5 15 10 9 8 3 7 2 1
+Custo: 4990
+Tempo: 28427.126326 s
+
+===== RESULTADO =====
+Thread: 0
+1 2 7 3 8 9 10 15 5 6 4 12 11 13 14 16 1
+Custo: 4990
+Tempo: 28427.126323 s
+Tempo total da execucao paralela: 28427.126400 s
