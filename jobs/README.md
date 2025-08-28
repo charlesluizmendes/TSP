@@ -56,10 +56,10 @@ cat tsp_omp.o<jobid>
 
 ## Copiar os resultados (de dentro do HPC para enviar ao Github)
 ```
-cp -v tsp_mpi.o[0-9]* /logs/brute_force/
-cp -v tsp_omp.o[0-9]* /logs/brute_force/
+cp -v tsp_mpi.o[0-9]* ./logs/brute_force/
+cp -v tsp_omp.o[0-9]* ./logs/brute_force/
 ```
 ```
-cp -v tsp_mpi.o[0-9]* /logs/nearest_neighbor/
-cp -v tsp_omp.o[0-9]* /logs/nearest_neighbor/
+cp -v tsp_mpi.o[0-9]* ./logs/nearest_neighbor/
+cp -v tsp_omp.o[0-9]* ./logs/nearest_neighbor/
 ```
