@@ -11,6 +11,7 @@ module purge
 module load gcc/11.4.0
 module load openmpi-gnu/4.0.1
 mpicc -O3 -o bin/tsp_mpi src/brute_force/tsp_mpi.c -lm
+mpicc -O3 -o bin/tsp_mpi src/nearest_neighbor/tsp_mpi.c -lm
 ```
 
 ## Compila OpenMP
@@ -18,28 +19,53 @@ mpicc -O3 -o bin/tsp_mpi src/brute_force/tsp_mpi.c -lm
 module purge
 module load gcc/11.4.0
 gcc -O3 -fopenmp -o bin/tsp_omp src/brute_force/tsp_omp.c -lm
+gcc -O3 -fopenmp -o bin/tsp_omp src/nearest_neighbor/tsp_omp.c -lm
 ```
 
 ## Submete os jobs
 ```
-qsub jobs/tsp_mpi_1.job
-qsub jobs/tsp_omp_1.job
+qsub jobs/brute_force/tsp_mpi_1.job
+qsub jobs/brute_force/tsp_omp_1.job
 ```
 ```
-qsub jobs/tsp_mpi_2.job
-qsub jobs/tsp_omp_2.job
+qsub jobs/nearest_neighbor/tsp_mpi_1.job
+qsub jobs/nearest_neighbor/tsp_omp_1.job
+```
+
+```
+qsub jobs/brute_force/tsp_mpi_2.job
+qsub jobs/brute_force/tsp_omp_2.job
 ```
 ```
-qsub jobs/tsp_mpi_4.job
-qsub jobs/tsp_omp_4.job
+qsub jobs/nearest_neighbor/tsp_mpi_2.job
+qsub jobs/nearest_neighbor/tsp_omp_2.job
+```
+
+```
+qsub jobs/brute_force/tsp_mpi_4.job
+qsub jobs/brute_force/tsp_omp_4.job
 ```
 ```
-qsub jobs/tsp_mpi_8.job
-qsub jobs/tsp_omp_8.job
+qsub jobs/nearest_neighbor/tsp_mpi_4.job
+qsub jobs/nearest_neighbor/tsp_omp_4.job
+```
+
+```
+qsub jobs/brute_force/tsp_mpi_8.job
+qsub jobs/brute_force/tsp_omp_8.job
 ```
 ```
-qsub jobs/tsp_mpi_16.job
-qsub jobs/tsp_omp_16.job
+qsub jobs/nearest_neighbor/tsp_mpi_8.job
+qsub jobs/nearest_neighbor/tsp_omp_8.job
+```
+
+```
+qsub jobs/brute_force/tsp_mpi_16.job
+qsub jobs/brute_force/tsp_omp_16.job
+```
+```
+qsub jobs/nearest_neighbor/tsp_mpi_16.job
+qsub jobs/nearest_neighbor/tsp_omp_16.job
 ```
 
 ## Verifica status dos jobs
