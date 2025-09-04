@@ -88,6 +88,11 @@ qsub jobs/nearest_neighbor/tsp_mpi_256.job
 qsub jobs/nearest_neighbor/tsp_omp_256.job
 ```
 
+```
+qsub jobs/nearest_neighbor/tsp_mpi_512.job
+qsub jobs/nearest_neighbor/tsp_omp_512.job
+```
+
 ## Verifica status dos jobs
 ```
 qstat -u $USER
