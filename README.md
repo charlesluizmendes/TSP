@@ -18,8 +18,6 @@ Para compilar o programa, basta executar os seguintes comandos abaixo:
 
 ### MPI
 
-(Windows)
-
 Abordagem de Força Bruta:
 
 ```bash
@@ -35,8 +33,6 @@ Algoritmo de Nearest Neighbor:
 
 
 ### OpenMP
-
-(Windows)
 
 Abordagem de Força Bruta:
 
@@ -54,8 +50,6 @@ Algoritmo de Nearest Neighbor:
 
 ### Métricas
 
-(Windows)
-
 ```bash
 & "C:\msys64\ucrt64\bin\gcc.exe" -O2 -fopenmp -lm ".\src\metrics.c" -o ".\bin\metrics.exe"
 ```
@@ -69,8 +63,6 @@ Para executar o programa e visualizar os resultados basta executar os comandos a
 
 ### MPI
 
-(Windows)
-
 ```bash
 mpiexec -np 2 .\bin\tsp_mpi.exe .\data\berlin13.tsp
 ```
@@ -82,8 +74,6 @@ mpiexec -np 2 .\bin\tsp_mpi.exe .\data\berlin13.tsp
 
 ### OpenM
 
-(Windows)
-
 ```bash
 $env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\berlin13.tsp
 ```
@@ -94,8 +84,6 @@ $env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\berlin13.tsp
 
 
 ### Métricas
-
-(Windows)
 
 ```bash
 .\bin\metrics.exe
