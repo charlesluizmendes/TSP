@@ -14,6 +14,8 @@ A seguinte solução propõe a utilização desse algoritmo utilizando bibliotec
 
 Para compilar o programa, basta executar os seguintes comandos abaixo:
 
+
+
 ### MPI
 
 (Windows)
@@ -29,6 +31,8 @@ Algoritmo de Nearest Neighbor:
 ```bash
 & "C:\msys64\ucrt64\bin\gcc.exe" -O3 -I"$Env:MSMPI_INC" ".\src\nearest_neighbor\tsp_mpi.c" -L"$Env:MSMPI_LIB64" -lmsmpi -lAdvapi32 -o ".\bin\tsp_mpi.exe"
 ```
+
+
 
 ### OpenMP
 
@@ -46,6 +50,8 @@ Algoritmo de Nearest Neighbor:
 & "C:\msys64\ucrt64\bin\gcc.exe" -O3 -fopenmp -lm ".\src\nearest_neighbor\tsp_omp.c" -o ".\bin\tsp_omp.exe"
 ```
 
+
+
 ### Métricas
 
 (Windows)
@@ -54,9 +60,12 @@ Algoritmo de Nearest Neighbor:
 & "C:\msys64\ucrt64\bin\gcc.exe" -O2 -fopenmp -lm ".\src\metrics.c" -o ".\bin\metrics.exe"
 ```
 
+
+
 ## Execução
 
 Para executar o programa e visualizar os resultados basta executar os comandos abaixo:
+
 
 ### MPI
 
@@ -70,6 +79,7 @@ mpiexec -np 2 .\bin\tsp_mpi.exe .\data\berlin13.tsp
 - `.\bin\tsp_mpi.exe`: Caminho para o executável compilado com suporte a **MPI**.
 - `.\data\berlin13.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
 
+
 ### OpenM
 
 (Windows)
@@ -81,6 +91,7 @@ $env:OMP_NUM_THREADS=2; .\bin\tsp_omp.exe .\data\berlin13.tsp
 - `$env:OMP_NUM_THREADS=2`: Define o uso de **2 threads paralelas**.
 - `.\bin\tsp_omp.exe`: Caminho para o executável compilado com suporte a **OpenMP**.
 - `.\data\berlin13.tsp`: Caminho para o arquivo de entrada no formato **TSPLIB**.
+
 
 ### Métricas
 
