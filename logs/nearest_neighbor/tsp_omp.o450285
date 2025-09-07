@@ -1,0 +1,136 @@
+Numero de threads OpenMP: 32
+
+Thread 0:
+Custo: 61627
+Tempo: 0.084889 s
+
+Thread 1:
+Custo: 62268
+Tempo: 0.084875 s
+
+Thread 2:
+Custo: 61980
+Tempo: 0.084883 s
+
+Thread 3:
+Custo: 62091
+Tempo: 0.084878 s
+
+Thread 4:
+Custo: 62514
+Tempo: 0.084877 s
+
+Thread 5:
+Custo: 60546
+Tempo: 0.084868 s
+
+Thread 6:
+Custo: 60716
+Tempo: 0.084881 s
+
+Thread 7:
+Custo: 60175
+Tempo: 0.084866 s
+
+Thread 8:
+Custo: 60202
+Tempo: 0.084879 s
+
+Thread 9:
+Custo: 61382
+Tempo: 0.084866 s
+
+Thread 10:
+Custo: 61412
+Tempo: 0.084874 s
+
+Thread 11:
+Custo: 60750
+Tempo: 0.084872 s
+
+Thread 12:
+Custo: 60928
+Tempo: 0.084867 s
+
+Thread 13:
+Custo: 61614
+Tempo: 0.084859 s
+
+Thread 14:
+Custo: 60877
+Tempo: 0.084873 s
+
+Thread 15:
+Custo: 60999
+Tempo: 0.084874 s
+
+Thread 16:
+Custo: 60982
+Tempo: 0.084877 s
+
+Thread 17:
+Custo: 60993
+Tempo: 0.084862 s
+
+Thread 18:
+Custo: 60989
+Tempo: 0.084872 s
+
+Thread 19:
+Custo: 60895
+Tempo: 0.084879 s
+
+Thread 20:
+Custo: 61196
+Tempo: 0.084863 s
+
+Thread 21:
+Custo: 61217
+Tempo: 0.084877 s
+
+Thread 22:
+Custo: 61272
+Tempo: 0.084864 s
+
+Thread 23:
+Custo: 62544
+Tempo: 0.084891 s
+
+Thread 24:
+Custo: 62660
+Tempo: 0.084869 s
+
+Thread 25:
+Custo: 62096
+Tempo: 0.084886 s
+
+Thread 26:
+Custo: 62350
+Tempo: 0.084883 s
+
+Thread 27:
+Custo: 62391
+Tempo: 0.084890 s
+
+Thread 28:
+Custo: 62353
+Tempo: 0.084881 s
+
+Thread 29:
+Custo: 62244
+Tempo: 0.084889 s
+
+Thread 30:
+Custo: 62783
+Tempo: 0.084878 s
+
+Thread 31:
+Custo: 63117
+Tempo: 0.084887 s
+
+===== RESULTADO =====
+Thread: 7
+Custo: 60175
+Tempo: 0.084866 s
+Tempo efetivo da execucao paralela: 0.084891 s
+Tempo total (com overhead OpenMP): 0.085430 s
