@@ -62,8 +62,6 @@ double nearest_neighbor(int start, int *path) {
 
 void print_result(const char *label, int *path, double cost, double time) {
     printf("%s:\n", label);
-    for (int i = 0; i < N; i++) printf("%d ", cities[path[i]].id);
-    printf("%d\n", cities[path[0]].id);
     printf("Custo: %.0f\n", cost);
     printf("Tempo: %.6f s\n\n", time);
 }
@@ -142,8 +140,6 @@ int main(int argc, char *argv[]) {
     printf("===== RESULTADO =====\n");
     printf("Thread: %d\n", winner_thread);
     
-    for (int i = 0; i < N; i++) printf("%d ", cities[all_threads[winner_thread].path[i]].id);
-    printf("%d\n", cities[all_threads[winner_thread].path[0]].id);
     printf("Custo: %.0f\n", all_threads[winner_thread].cost);
     printf("Tempo: %.6f s\n", all_threads[winner_thread].individual_time);
     printf("Tempo efetivo da execucao paralela: %.6f s\n", max_individual_time);
