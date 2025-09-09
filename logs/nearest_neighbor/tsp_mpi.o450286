@@ -1,0 +1,264 @@
+Numero de processos MPI: 64
+
+Processo 0:
+Custo: 61357
+Tempo: 0.058441 s
+
+Processo 1:
+Custo: 61217
+Tempo: 0.041381 s
+
+Processo 2:
+Custo: 61079
+Tempo: 0.071642 s
+
+Processo 3:
+Custo: 61628
+Tempo: 0.073593 s
+
+Processo 4:
+Custo: 61959
+Tempo: 0.075246 s
+
+Processo 5:
+Custo: 61149
+Tempo: 0.042847 s
+
+Processo 6:
+Custo: 60989
+Tempo: 0.071664 s
+
+Processo 7:
+Custo: 61105
+Tempo: 0.042480 s
+
+Processo 8:
+Custo: 62388
+Tempo: 0.043682 s
+
+Processo 9:
+Custo: 62408
+Tempo: 0.056510 s
+
+Processo 10:
+Custo: 61464
+Tempo: 0.071633 s
+
+Processo 11:
+Custo: 61683
+Tempo: 0.044320 s
+
+Processo 12:
+Custo: 61662
+Tempo: 0.075539 s
+
+Processo 13:
+Custo: 60928
+Tempo: 0.041096 s
+
+Processo 14:
+Custo: 60999
+Tempo: 0.042591 s
+
+Processo 15:
+Custo: 60895
+Tempo: 0.069823 s
+
+Processo 16:
+Custo: 60716
+Tempo: 0.041245 s
+
+Processo 17:
+Custo: 60746
+Tempo: 0.055699 s
+
+Processo 18:
+Custo: 61505
+Tempo: 0.056303 s
+
+Processo 19:
+Custo: 61721
+Tempo: 0.040368 s
+
+Processo 20:
+Custo: 60982
+Tempo: 0.038893 s
+
+Processo 21:
+Custo: 61129
+Tempo: 0.069436 s
+
+Processo 22:
+Custo: 62083
+Tempo: 0.038534 s
+
+Processo 23:
+Custo: 62332
+Tempo: 0.068281 s
+
+Processo 24:
+Custo: 62334
+Tempo: 0.037097 s
+
+Processo 25:
+Custo: 61212
+Tempo: 0.038614 s
+
+Processo 26:
+Custo: 62351
+Tempo: 0.068295 s
+
+Processo 27:
+Custo: 60175
+Tempo: 0.069251 s
+
+Processo 28:
+Custo: 61614
+Tempo: 0.069164 s
+
+Processo 29:
+Custo: 62357
+Tempo: 0.039984 s
+
+Processo 30:
+Custo: 61412
+Tempo: 0.085658 s
+
+Processo 31:
+Custo: 61500
+Tempo: 0.038528 s
+
+Processo 32:
+Custo: 61191
+Tempo: 0.070096 s
+
+Processo 33:
+Custo: 62607
+Tempo: 0.069574 s
+
+Processo 34:
+Custo: 62544
+Tempo: 0.072135 s
+
+Processo 35:
+Custo: 62300
+Tempo: 0.068579 s
+
+Processo 36:
+Custo: 61196
+Tempo: 0.040128 s
+
+Processo 37:
+Custo: 61538
+Tempo: 0.037390 s
+
+Processo 38:
+Custo: 62112
+Tempo: 0.040314 s
+
+Processo 39:
+Custo: 62686
+Tempo: 0.037088 s
+
+Processo 40:
+Custo: 60202
+Tempo: 0.038553 s
+
+Processo 41:
+Custo: 60993
+Tempo: 0.040003 s
+
+Processo 42:
+Custo: 60877
+Tempo: 0.066745 s
+
+Processo 43:
+Custo: 60546
+Tempo: 0.071606 s
+
+Processo 44:
+Custo: 60257
+Tempo: 0.037320 s
+
+Processo 45:
+Custo: 60750
+Tempo: 0.069827 s
+
+Processo 46:
+Custo: 62589
+Tempo: 0.039389 s
+
+Processo 47:
+Custo: 60548
+Tempo: 0.039599 s
+
+Processo 48:
+Custo: 61562
+Tempo: 0.069721 s
+
+Processo 49:
+Custo: 60820
+Tempo: 0.037114 s
+
+Processo 50:
+Custo: 60281
+Tempo: 0.072270 s
+
+Processo 51:
+Custo: 60823
+Tempo: 0.068563 s
+
+Processo 52:
+Custo: 61074
+Tempo: 0.057283 s
+
+Processo 53:
+Custo: 61252
+Tempo: 0.068494 s
+
+Processo 54:
+Custo: 61233
+Tempo: 0.064808 s
+
+Processo 55:
+Custo: 61724
+Tempo: 0.038492 s
+
+Processo 56:
+Custo: 60830
+Tempo: 0.038088 s
+
+Processo 57:
+Custo: 61558
+Tempo: 0.068533 s
+
+Processo 58:
+Custo: 61582
+Tempo: 0.039939 s
+
+Processo 59:
+Custo: 62274
+Tempo: 0.037706 s
+
+Processo 60:
+Custo: 61854
+Tempo: 0.038805 s
+
+Processo 61:
+Custo: 61382
+Tempo: 0.071250 s
+
+Processo 62:
+Custo: 61513
+Tempo: 0.038505 s
+
+Processo 63:
+Custo: 62387
+Tempo: 0.037377 s
+
+===== RESULTADO =====
+Processo: 27
+Custo: 60175
+Tempo: 0.069251 s
+Tempo efetivo da execucao paralela: 0.085658 s
+Tempo total (com overhead MPI): 0.588012 s

@@ -1,0 +1,1032 @@
+Numero de threads OpenMP: 256
+
+Thread 0:
+Custo: 61627
+Tempo: 0.085730 s
+
+Thread 1:
+Custo: 61959
+Tempo: 0.085970 s
+
+Thread 2:
+Custo: 62388
+Tempo: 0.085961 s
+
+Thread 3:
+Custo: 61839
+Tempo: 0.085973 s
+
+Thread 4:
+Custo: 61662
+Tempo: 0.085975 s
+
+Thread 5:
+Custo: 62073
+Tempo: 0.085968 s
+
+Thread 6:
+Custo: 62144
+Tempo: 0.085967 s
+
+Thread 7:
+Custo: 62268
+Tempo: 0.085962 s
+
+Thread 8:
+Custo: 62334
+Tempo: 0.085960 s
+
+Thread 9:
+Custo: 62384
+Tempo: 0.085958 s
+
+Thread 10:
+Custo: 62460
+Tempo: 0.085961 s
+
+Thread 11:
+Custo: 62607
+Tempo: 0.085958 s
+
+Thread 12:
+Custo: 62651
+Tempo: 0.085962 s
+
+Thread 13:
+Custo: 62516
+Tempo: 0.085968 s
+
+Thread 14:
+Custo: 62560
+Tempo: 0.086660 s
+
+Thread 15:
+Custo: 62296
+Tempo: 0.076574 s
+
+Thread 16:
+Custo: 62626
+Tempo: 0.064583 s
+
+Thread 17:
+Custo: 62344
+Tempo: 0.052594 s
+
+Thread 18:
+Custo: 62672
+Tempo: 0.055654 s
+
+Thread 19:
+Custo: 62795
+Tempo: 0.048461 s
+
+Thread 20:
+Custo: 61980
+Tempo: 0.041333 s
+
+Thread 21:
+Custo: 62387
+Tempo: 0.055869 s
+
+Thread 22:
+Custo: 62091
+Tempo: 0.048535 s
+
+Thread 23:
+Custo: 62478
+Tempo: 0.040986 s
+
+Thread 24:
+Custo: 62121
+Tempo: 0.054776 s
+
+Thread 25:
+Custo: 62105
+Tempo: 0.044303 s
+
+Thread 26:
+Custo: 62816
+Tempo: 0.032470 s
+
+Thread 27:
+Custo: 62527
+Tempo: 0.023828 s
+
+Thread 28:
+Custo: 62700
+Tempo: 0.028733 s
+
+Thread 29:
+Custo: 62609
+Tempo: 0.032962 s
+
+Thread 30:
+Custo: 62556
+Tempo: 0.026882 s
+
+Thread 31:
+Custo: 62592
+Tempo: 0.034130 s
+
+Thread 32:
+Custo: 62584
+Tempo: 0.036033 s
+
+Thread 33:
+Custo: 62514
+Tempo: 0.052396 s
+
+Thread 34:
+Custo: 62829
+Tempo: 0.045196 s
+
+Thread 35:
+Custo: 60546
+Tempo: 0.052615 s
+
+Thread 36:
+Custo: 62589
+Tempo: 0.079429 s
+
+Thread 37:
+Custo: 60548
+Tempo: 0.068315 s
+
+Thread 38:
+Custo: 62589
+Tempo: 0.055903 s
+
+Thread 39:
+Custo: 62727
+Tempo: 0.044328 s
+
+Thread 40:
+Custo: 61582
+Tempo: 0.032780 s
+
+Thread 41:
+Custo: 62274
+Tempo: 0.044353 s
+
+Thread 42:
+Custo: 62602
+Tempo: 0.056336 s
+
+Thread 43:
+Custo: 62619
+Tempo: 0.068348 s
+
+Thread 44:
+Custo: 64132
+Tempo: 0.080602 s
+
+Thread 45:
+Custo: 62903
+Tempo: 0.078472 s
+
+Thread 46:
+Custo: 62812
+Tempo: 0.068291 s
+
+Thread 47:
+Custo: 62634
+Tempo: 0.056312 s
+
+Thread 48:
+Custo: 60716
+Tempo: 0.044326 s
+
+Thread 49:
+Custo: 63297
+Tempo: 0.029954 s
+
+Thread 50:
+Custo: 62083
+Tempo: 0.032536 s
+
+Thread 51:
+Custo: 60175
+Tempo: 0.044538 s
+
+Thread 52:
+Custo: 62121
+Tempo: 0.056530 s
+
+Thread 53:
+Custo: 61709
+Tempo: 0.068543 s
+
+Thread 54:
+Custo: 62829
+Tempo: 0.080659 s
+
+Thread 55:
+Custo: 62112
+Tempo: 0.079394 s
+
+Thread 56:
+Custo: 60202
+Tempo: 0.068767 s
+
+Thread 57:
+Custo: 60257
+Tempo: 0.056603 s
+
+Thread 58:
+Custo: 61998
+Tempo: 0.044585 s
+
+Thread 59:
+Custo: 60281
+Tempo: 0.032790 s
+
+Thread 60:
+Custo: 62852
+Tempo: 0.020276 s
+
+Thread 61:
+Custo: 60830
+Tempo: 0.032477 s
+
+Thread 62:
+Custo: 61935
+Tempo: 0.045190 s
+
+Thread 63:
+Custo: 61382
+Tempo: 0.056423 s
+
+Thread 64:
+Custo: 61940
+Tempo: 0.068498 s
+
+Thread 65:
+Custo: 62700
+Tempo: 0.079860 s
+
+Thread 66:
+Custo: 62849
+Tempo: 0.079161 s
+
+Thread 67:
+Custo: 62223
+Tempo: 0.068820 s
+
+Thread 68:
+Custo: 61674
+Tempo: 0.056559 s
+
+Thread 69:
+Custo: 64967
+Tempo: 0.044632 s
+
+Thread 70:
+Custo: 62354
+Tempo: 0.032303 s
+
+Thread 71:
+Custo: 63252
+Tempo: 0.020283 s
+
+Thread 72:
+Custo: 62365
+Tempo: 0.020620 s
+
+Thread 73:
+Custo: 63691
+Tempo: 0.032804 s
+
+Thread 74:
+Custo: 61412
+Tempo: 0.044295 s
+
+Thread 75:
+Custo: 63743
+Tempo: 0.056567 s
+
+Thread 76:
+Custo: 62428
+Tempo: 0.068936 s
+
+Thread 77:
+Custo: 63448
+Tempo: 0.080191 s
+
+Thread 78:
+Custo: 64335
+Tempo: 0.079360 s
+
+Thread 79:
+Custo: 60750
+Tempo: 0.068428 s
+
+Thread 80:
+Custo: 63222
+Tempo: 0.056612 s
+
+Thread 81:
+Custo: 61661
+Tempo: 0.044608 s
+
+Thread 82:
+Custo: 64517
+Tempo: 0.032323 s
+
+Thread 83:
+Custo: 61558
+Tempo: 0.020239 s
+
+Thread 84:
+Custo: 63718
+Tempo: 0.017131 s
+
+Thread 85:
+Custo: 62463
+Tempo: 0.020286 s
+
+Thread 86:
+Custo: 62457
+Tempo: 0.032940 s
+
+Thread 87:
+Custo: 64340
+Tempo: 0.044576 s
+
+Thread 88:
+Custo: 62502
+Tempo: 0.056359 s
+
+Thread 89:
+Custo: 60928
+Tempo: 0.068816 s
+
+Thread 90:
+Custo: 62361
+Tempo: 0.080648 s
+
+Thread 91:
+Custo: 62509
+Tempo: 0.052991 s
+
+Thread 92:
+Custo: 62314
+Tempo: 0.045597 s
+
+Thread 93:
+Custo: 64214
+Tempo: 0.038058 s
+
+Thread 94:
+Custo: 61614
+Tempo: 0.046018 s
+
+Thread 95:
+Custo: 62227
+Tempo: 0.038168 s
+
+Thread 96:
+Custo: 63703
+Tempo: 0.038047 s
+
+Thread 97:
+Custo: 62300
+Tempo: 0.031648 s
+
+Thread 98:
+Custo: 62438
+Tempo: 0.033743 s
+
+Thread 99:
+Custo: 60877
+Tempo: 0.026599 s
+
+Thread 100:
+Custo: 62475
+Tempo: 0.030978 s
+
+Thread 101:
+Custo: 61762
+Tempo: 0.023882 s
+
+Thread 102:
+Custo: 64006
+Tempo: 0.032516 s
+
+Thread 103:
+Custo: 61724
+Tempo: 0.045009 s
+
+Thread 104:
+Custo: 61500
+Tempo: 0.056099 s
+
+Thread 105:
+Custo: 61854
+Tempo: 0.029068 s
+
+Thread 106:
+Custo: 61513
+Tempo: 0.020365 s
+
+Thread 107:
+Custo: 61079
+Tempo: 0.019920 s
+
+Thread 108:
+Custo: 64383
+Tempo: 0.018299 s
+
+Thread 109:
+Custo: 61470
+Tempo: 0.016346 s
+
+Thread 110:
+Custo: 63920
+Tempo: 0.079066 s
+
+Thread 111:
+Custo: 60999
+Tempo: 0.068483 s
+
+Thread 112:
+Custo: 62614
+Tempo: 0.056550 s
+
+Thread 113:
+Custo: 60982
+Tempo: 0.044597 s
+
+Thread 114:
+Custo: 64060
+Tempo: 0.032561 s
+
+Thread 115:
+Custo: 61062
+Tempo: 0.020282 s
+
+Thread 116:
+Custo: 63497
+Tempo: 0.022197 s
+
+Thread 117:
+Custo: 61605
+Tempo: 0.014655 s
+
+Thread 118:
+Custo: 63377
+Tempo: 0.032827 s
+
+Thread 119:
+Custo: 62701
+Tempo: 0.044455 s
+
+Thread 120:
+Custo: 60993
+Tempo: 0.056808 s
+
+Thread 121:
+Custo: 62735
+Tempo: 0.068602 s
+
+Thread 122:
+Custo: 62640
+Tempo: 0.079893 s
+
+Thread 123:
+Custo: 60993
+Tempo: 0.020022 s
+
+Thread 124:
+Custo: 61074
+Tempo: 0.028529 s
+
+Thread 125:
+Custo: 62698
+Tempo: 0.016192 s
+
+Thread 126:
+Custo: 62717
+Tempo: 0.018072 s
+
+Thread 127:
+Custo: 62690
+Tempo: 0.017871 s
+
+Thread 128:
+Custo: 62658
+Tempo: 0.014888 s
+
+Thread 129:
+Custo: 61149
+Tempo: 0.014594 s
+
+Thread 130:
+Custo: 60989
+Tempo: 0.020737 s
+
+Thread 131:
+Custo: 63439
+Tempo: 0.022154 s
+
+Thread 132:
+Custo: 61186
+Tempo: 0.014958 s
+
+Thread 133:
+Custo: 60895
+Tempo: 0.007769 s
+
+Thread 134:
+Custo: 61502
+Tempo: 0.016644 s
+
+Thread 135:
+Custo: 65705
+Tempo: 0.019533 s
+
+Thread 136:
+Custo: 61212
+Tempo: 0.019734 s
+
+Thread 137:
+Custo: 62208
+Tempo: 0.032489 s
+
+Thread 138:
+Custo: 61191
+Tempo: 0.044335 s
+
+Thread 139:
+Custo: 64152
+Tempo: 0.056355 s
+
+Thread 140:
+Custo: 61196
+Tempo: 0.066269 s
+
+Thread 141:
+Custo: 64671
+Tempo: 0.079068 s
+
+Thread 142:
+Custo: 63107
+Tempo: 0.068512 s
+
+Thread 143:
+Custo: 63842
+Tempo: 0.056312 s
+
+Thread 144:
+Custo: 62978
+Tempo: 0.044502 s
+
+Thread 145:
+Custo: 65886
+Tempo: 0.032478 s
+
+Thread 146:
+Custo: 61233
+Tempo: 0.024358 s
+
+Thread 147:
+Custo: 62540
+Tempo: 0.022847 s
+
+Thread 148:
+Custo: 61614
+Tempo: 0.031168 s
+
+Thread 149:
+Custo: 62260
+Tempo: 0.039374 s
+
+Thread 150:
+Custo: 62254
+Tempo: 0.047558 s
+
+Thread 151:
+Custo: 61357
+Tempo: 0.055751 s
+
+Thread 152:
+Custo: 61217
+Tempo: 0.064035 s
+
+Thread 153:
+Custo: 61628
+Tempo: 0.072237 s
+
+Thread 154:
+Custo: 61435
+Tempo: 0.079594 s
+
+Thread 155:
+Custo: 62586
+Tempo: 0.073794 s
+
+Thread 156:
+Custo: 61464
+Tempo: 0.078585 s
+
+Thread 157:
+Custo: 61683
+Tempo: 0.073822 s
+
+Thread 158:
+Custo: 61272
+Tempo: 0.069040 s
+
+Thread 159:
+Custo: 61280
+Tempo: 0.075690 s
+
+Thread 160:
+Custo: 61505
+Tempo: 0.070959 s
+
+Thread 161:
+Custo: 61506
+Tempo: 0.066190 s
+
+Thread 162:
+Custo: 62188
+Tempo: 0.075687 s
+
+Thread 163:
+Custo: 62516
+Tempo: 0.070905 s
+
+Thread 164:
+Custo: 62776
+Tempo: 0.044160 s
+
+Thread 165:
+Custo: 62617
+Tempo: 0.041197 s
+
+Thread 166:
+Custo: 62712
+Tempo: 0.049363 s
+
+Thread 167:
+Custo: 63180
+Tempo: 0.071710 s
+
+Thread 168:
+Custo: 62544
+Tempo: 0.066951 s
+
+Thread 169:
+Custo: 64286
+Tempo: 0.067718 s
+
+Thread 170:
+Custo: 63747
+Tempo: 0.064472 s
+
+Thread 171:
+Custo: 63871
+Tempo: 0.066115 s
+
+Thread 172:
+Custo: 63774
+Tempo: 0.079080 s
+
+Thread 173:
+Custo: 64582
+Tempo: 0.070969 s
+
+Thread 174:
+Custo: 62672
+Tempo: 0.062778 s
+
+Thread 175:
+Custo: 64573
+Tempo: 0.054767 s
+
+Thread 176:
+Custo: 62660
+Tempo: 0.046553 s
+
+Thread 177:
+Custo: 64551
+Tempo: 0.038374 s
+
+Thread 178:
+Custo: 64634
+Tempo: 0.030252 s
+
+Thread 179:
+Custo: 64617
+Tempo: 0.023130 s
+
+Thread 180:
+Custo: 64406
+Tempo: 0.031338 s
+
+Thread 181:
+Custo: 65152
+Tempo: 0.039620 s
+
+Thread 182:
+Custo: 64236
+Tempo: 0.047783 s
+
+Thread 183:
+Custo: 64340
+Tempo: 0.055949 s
+
+Thread 184:
+Custo: 62964
+Tempo: 0.064128 s
+
+Thread 185:
+Custo: 64530
+Tempo: 0.072314 s
+
+Thread 186:
+Custo: 63037
+Tempo: 0.079611 s
+
+Thread 187:
+Custo: 64287
+Tempo: 0.062023 s
+
+Thread 188:
+Custo: 62938
+Tempo: 0.064805 s
+
+Thread 189:
+Custo: 63340
+Tempo: 0.062962 s
+
+Thread 190:
+Custo: 63196
+Tempo: 0.061967 s
+
+Thread 191:
+Custo: 64194
+Tempo: 0.060337 s
+
+Thread 192:
+Custo: 64161
+Tempo: 0.059764 s
+
+Thread 193:
+Custo: 62096
+Tempo: 0.060033 s
+
+Thread 194:
+Custo: 62271
+Tempo: 0.057158 s
+
+Thread 195:
+Custo: 64451
+Tempo: 0.057255 s
+
+Thread 196:
+Custo: 62351
+Tempo: 0.052270 s
+
+Thread 197:
+Custo: 62350
+Tempo: 0.055397 s
+
+Thread 198:
+Custo: 62357
+Tempo: 0.060175 s
+
+Thread 199:
+Custo: 64777
+Tempo: 0.064935 s
+
+Thread 200:
+Custo: 64877
+Tempo: 0.069170 s
+
+Thread 201:
+Custo: 63634
+Tempo: 0.073953 s
+
+Thread 202:
+Custo: 62437
+Tempo: 0.078768 s
+
+Thread 203:
+Custo: 64622
+Tempo: 0.078850 s
+
+Thread 204:
+Custo: 64881
+Tempo: 0.070658 s
+
+Thread 205:
+Custo: 63371
+Tempo: 0.062579 s
+
+Thread 206:
+Custo: 64417
+Tempo: 0.054376 s
+
+Thread 207:
+Custo: 62391
+Tempo: 0.046624 s
+
+Thread 208:
+Custo: 63749
+Tempo: 0.037892 s
+
+Thread 209:
+Custo: 63740
+Tempo: 0.030626 s
+
+Thread 210:
+Custo: 64915
+Tempo: 0.021995 s
+
+Thread 211:
+Custo: 63667
+Tempo: 0.023064 s
+
+Thread 212:
+Custo: 64445
+Tempo: 0.031224 s
+
+Thread 213:
+Custo: 63525
+Tempo: 0.039375 s
+
+Thread 214:
+Custo: 62575
+Tempo: 0.047594 s
+
+Thread 215:
+Custo: 63782
+Tempo: 0.055676 s
+
+Thread 216:
+Custo: 63294
+Tempo: 0.063874 s
+
+Thread 217:
+Custo: 62353
+Tempo: 0.072091 s
+
+Thread 218:
+Custo: 62664
+Tempo: 0.079627 s
+
+Thread 219:
+Custo: 63645
+Tempo: 0.078876 s
+
+Thread 220:
+Custo: 63036
+Tempo: 0.070692 s
+
+Thread 221:
+Custo: 63265
+Tempo: 0.062578 s
+
+Thread 222:
+Custo: 63138
+Tempo: 0.054452 s
+
+Thread 223:
+Custo: 63308
+Tempo: 0.046237 s
+
+Thread 224:
+Custo: 63671
+Tempo: 0.038115 s
+
+Thread 225:
+Custo: 63286
+Tempo: 0.029992 s
+
+Thread 226:
+Custo: 63626
+Tempo: 0.021954 s
+
+Thread 227:
+Custo: 62940
+Tempo: 0.013753 s
+
+Thread 228:
+Custo: 63263
+Tempo: 0.014802 s
+
+Thread 229:
+Custo: 62942
+Tempo: 0.023062 s
+
+Thread 230:
+Custo: 66158
+Tempo: 0.031203 s
+
+Thread 231:
+Custo: 64418
+Tempo: 0.039349 s
+
+Thread 232:
+Custo: 62858
+Tempo: 0.047584 s
+
+Thread 233:
+Custo: 63088
+Tempo: 0.055656 s
+
+Thread 234:
+Custo: 62244
+Tempo: 0.063856 s
+
+Thread 235:
+Custo: 62564
+Tempo: 0.072138 s
+
+Thread 236:
+Custo: 62783
+Tempo: 0.079647 s
+
+Thread 237:
+Custo: 63151
+Tempo: 0.076086 s
+
+Thread 238:
+Custo: 63383
+Tempo: 0.067927 s
+
+Thread 239:
+Custo: 63480
+Tempo: 0.059791 s
+
+Thread 240:
+Custo: 63871
+Tempo: 0.051683 s
+
+Thread 241:
+Custo: 64624
+Tempo: 0.043650 s
+
+Thread 242:
+Custo: 68803
+Tempo: 0.035456 s
+
+Thread 243:
+Custo: 69071
+Tempo: 0.027425 s
+
+Thread 244:
+Custo: 68744
+Tempo: 0.019250 s
+
+Thread 245:
+Custo: 63149
+Tempo: 0.014435 s
+
+Thread 246:
+Custo: 63151
+Tempo: 0.018769 s
+
+Thread 247:
+Custo: 63117
+Tempo: 0.026946 s
+
+Thread 248:
+Custo: 69381
+Tempo: 0.035023 s
+
+Thread 249:
+Custo: 68818
+Tempo: 0.043192 s
+
+Thread 250:
+Custo: 68812
+Tempo: 0.051390 s
+
+Thread 251:
+Custo: 63520
+Tempo: 0.059665 s
+
+Thread 252:
+Custo: 64850
+Tempo: 0.067860 s
+
+Thread 253:
+Custo: 63515
+Tempo: 0.076107 s
+
+Thread 254:
+Custo: 65546
+Tempo: 0.083651 s
+
+Thread 255:
+Custo: 63408
+Tempo: 0.037341 s
+
+===== RESULTADO =====
+Thread: 51
+Custo: 60175
+Tempo: 0.044538 s
+Tempo efetivo da execucao paralela: 0.086660 s
+Tempo total (com overhead OpenMP): 0.092314 s
