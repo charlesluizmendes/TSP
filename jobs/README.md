@@ -11,7 +11,6 @@ module purge
 module load gcc/11.4.0
 module load openmpi-gnu/4.0.1
 mpicc -O3 -o bin/tsp_mpi src/brute_force/tsp_mpi.c -lm
-mpicc -O3 -o bin/tsp_mpi src/nearest_neighbor/tsp_mpi.c -lm
 ```
 
 ## Compila OpenMP
@@ -19,7 +18,6 @@ mpicc -O3 -o bin/tsp_mpi src/nearest_neighbor/tsp_mpi.c -lm
 module purge
 module load gcc/11.4.0
 gcc -O3 -fopenmp -o bin/tsp_omp src/brute_force/tsp_omp.c -lm
-gcc -O3 -fopenmp -o bin/tsp_omp src/nearest_neighbor/tsp_omp.c -lm
 ```
 
 ## Submete os jobs
@@ -27,70 +25,25 @@ gcc -O3 -fopenmp -o bin/tsp_omp src/nearest_neighbor/tsp_omp.c -lm
 qsub jobs/brute_force/tsp_mpi_1.job
 qsub jobs/brute_force/tsp_omp_1.job
 ```
-```
-qsub jobs/nearest_neighbor/tsp_mpi_1.job
-qsub jobs/nearest_neighbor/tsp_omp_1.job
-```
 
 ```
 qsub jobs/brute_force/tsp_mpi_2.job
 qsub jobs/brute_force/tsp_omp_2.job
-```
-```
-qsub jobs/nearest_neighbor/tsp_mpi_2.job
-qsub jobs/nearest_neighbor/tsp_omp_2.job
 ```
 
 ```
 qsub jobs/brute_force/tsp_mpi_4.job
 qsub jobs/brute_force/tsp_omp_4.job
 ```
-```
-qsub jobs/nearest_neighbor/tsp_mpi_4.job
-qsub jobs/nearest_neighbor/tsp_omp_4.job
-```
 
 ```
 qsub jobs/brute_force/tsp_mpi_8.job
 qsub jobs/brute_force/tsp_omp_8.job
 ```
-```
-qsub jobs/nearest_neighbor/tsp_mpi_8.job
-qsub jobs/nearest_neighbor/tsp_omp_8.job
-```
 
 ```
 qsub jobs/brute_force/tsp_mpi_16.job
 qsub jobs/brute_force/tsp_omp_16.job
-```
-```
-qsub jobs/nearest_neighbor/tsp_mpi_16.job
-qsub jobs/nearest_neighbor/tsp_omp_16.job
-```
-
-```
-qsub jobs/nearest_neighbor/tsp_mpi_32.job
-qsub jobs/nearest_neighbor/tsp_omp_32.job
-```
-
-```
-qsub jobs/nearest_neighbor/tsp_mpi_64.job
-qsub jobs/nearest_neighbor/tsp_omp_64.job
-```
-
-```
-qsub jobs/nearest_neighbor/tsp_mpi_128.job
-qsub jobs/nearest_neighbor/tsp_omp_128.job
-```
-
-```
-qsub jobs/nearest_neighbor/tsp_mpi_256.job
-qsub jobs/nearest_neighbor/tsp_omp_256.job
-```
-
-```
-qsub jobs/nearest_neighbor/tsp_mpi_512.job
-qsub jobs/nearest_neighbor/tsp_omp_512.job
 ```
 
 ## Verifica status dos jobs
@@ -109,8 +62,4 @@ cat tsp_omp.o<jobid>
 ```
 cp -v tsp_mpi.o[0-9]* ./logs/brute_force/
 cp -v tsp_omp.o[0-9]* ./logs/brute_force/
-```
-```
-cp -v tsp_mpi.o[0-9]* ./logs/nearest_neighbor/
-cp -v tsp_omp.o[0-9]* ./logs/nearest_neighbor/
 ```
